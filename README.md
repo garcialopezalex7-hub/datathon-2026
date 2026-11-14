@@ -46,6 +46,43 @@ A partir de les `5.993` hores de `data/train/` (`2025-09-01` .. `2026-08-16`):
 
 ---
 
+## 🔥 Mode Difícil — Ampliació Fotovoltaica i Bateria
+
+Regles de la plataforma oficial: `pv_kw × 12`, bateria **6.000 kWh / ±1.500 kW**, SOC inicial 50 %, només **3 hores** de preus/CO₂ a `obs` (`preus_properes_24h`, `co2_properes_24h`), meteorologia de l'última hora a `obs["noves_dades_5min"]` (`irradiancia_wm2`, `temp_ambient_c`, `temp_panel_c`, `vent_ms`) i claus `cap_max_kwh` / `power_max_kw`. L'excedent solar s'aboca a **0 € i 0 kg CO₂**.
+
+### Agent [`agent_hard.py`](agent_hard.py)
+
+1. **Previsió de mercat:** perfils (mes, hora, dia de la setmana) + correcció de nivell amb les 3 h conegudes.
+2. **Previsió de càrrega per analogia de dies:** k-NN sobre 250 corbes diàries de `data/train` (mateixa estació i tipus de dia) → MAE de càrrega **186 → 136 kW**.
+3. **Previsió de CO₂ per analogia:** mateix k-NN sobre corbes de CO₂ → MAE **0,010 → 0,009 kg/kWh**.
+4. **Previsió FV:** perfil mensual × índex de nuvolositat persistent (PV + irradiància de l'última hora), robust al fet que l'última hora sigui nocturna.
+5. **MPC / Programació Lineal 24 h** amb la restricció `grid_import ≥ net + c − d`: aprofita l'excedent solar gratuït i **no descarrega més que el consum net previst** (evita abocar a 0 €).
+6. **Safety clamp** amb `cap_max_kwh` / `power_max_kw` de l'`obs` i η = √0,90 → **0 infraccions**.
+
+### Resultats locals (Mode Difícil, `data/train`)
+
+| Avaluació | Score | ΔCO₂ | ΔCost | Infraccions |
+|---|---:|---:|---:|---:|
+| `data/train` complet (5.993 h) | **18,76** | 17,70 % | 21,24 % | 0 |
+| CV 12 blocs de 7 dies (offset 1) | 19,98 | 18,97 % | 22,35 % | 0 |
+| CV 12 blocs de 7 dies (offset 8) | 18,97 | 18,11 % | 20,97 % | 0 |
+| CV 12 blocs de 7 dies (offset 15) | 17,54 | 16,50 % | 19,95 % | 0 |
+| **Mitjana CV** | **18,83** | — | — | 0 |
+
+- `submission_hard.zip` conté només `agent.py` (taules incrustades, 36 KB, autocontingut).
+- Cada decisió ≈ **2,5 ms** → 2.016 h ≈ **5 s** (límit oficial: 60 s).
+- El rànquing públic avalua 1.008 h (50 % de les 2.016 h de test); l'altre 50 % és privat.
+
+### Execució local (Mode Difícil)
+
+```bash
+python3 tools/eval_hard.py agent_hard.py        # avaluació completa sobre data/train
+python3 tools/cv_hard.py agent_hard.py          # cross-validació per blocs de 7 dies
+python3 tools/make_submission_hard.py           # genera submission_hard.zip
+```
+
+---
+
 ## Estructura i Ús Local
 
 ```text
