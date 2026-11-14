@@ -73,6 +73,15 @@ Regles de la plataforma oficial: `pv_kw × 12`, bateria **6.000 kWh / ±1.500 kW
 - Cada decisió ≈ **2,5 ms** → 2.016 h ≈ **5 s** (límit oficial: 60 s).
 - El rànquing públic avalua 1.008 h (50 % de les 2.016 h de test); l'altre 50 % és privat.
 
+### Comparativa d'implementacions (Mode Difícil)
+
+| Implementació | Enfocament | CV 7 dies | `data/train` | Mida |
+|---|---|---:|---:|---:|
+| [`mode_dificil/submission.zip`](mode_dificil/submission.zip) | LightGBM (4 models) + MPC LP estocàstic + correcció d'asimetria | **19,05** | 19,14 | 1,5 MB |
+| [`submission_hard.zip`](submission_hard.zip) · [`agent_hard.py`](agent_hard.py) | Perfils + analogia de dies + MPC LP 24 h (sense ML) | 18,83 | 18,76 | 36 KB |
+
+**Recomanació de lliurament:** pujar `mode_dificil/submission.zip` al rànquing de Mode Difícil (millor CV i ja validat). `submission_hard.zip` queda com a alternativa **autocontinguda** (un sol fitxer, sense dependència de LightGBM) i com a contrast independent de l'avaluació.
+
 ### Execució local (Mode Difícil)
 
 ```bash
