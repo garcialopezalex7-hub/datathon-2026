@@ -51,14 +51,12 @@ A partir de les `5.993` hores de `data/train/` (`2025-09-01` .. `2026-08-16`):
 ```text
 .
 ├── mode_estandard/                    # Solució Mode Estàndard (2.000 kWh, ±500 kW, 24 h)
-│   ├── agent.py                       # MPC LP 24 h + LightGBM demanda neta (5.67 train / 6.43 test)
-│   ├── model_net.pkl                  # Model LightGBM demanda neta
+│   ├── agent.py                       # Controlador MPC LP 24 h (5.67 train / 6.43 test)
 │   └── submission.zip                 # Paquet llest per pujar al Mode Estàndard
 ├── mode_dificil/                      # Solució Mode Difícil (6.000 kWh, ±1.500 kW, PV ×12, 3 h + meteo)
 │   ├── agent.py                       # Agent unificat MPC LP + 5 models LightGBM (18.39 train / 16.81 OOF)
 │   ├── model_bundle.pkl               # Bundle amb std_net, hard_load, hard_pv, hard_price i hard_co2
 │   └── submission.zip                 # Paquet llest per pujar al Mode Difícil
-├── agent.py                           # Agent base a l'arrel
 ├── graficas/                          # Gràfiques d'anàlisi i simulació
 ├── paquet_participants_datathon_upc/  # Dades train, docs i starter_kit oficial
 └── AGENTS.md                          # Regles de flux de treball Git
