@@ -69,7 +69,6 @@ obs (t) ─► Sanitización & Memoria (deques 168h, detección de saltos de epi
 ├── agent_hard.py                        # Alternativa autocontenida sin ML (k-NN analogía de días + LP)
 ├── hard_tables.pkl                      # Tablas auxiliares para agent_hard.py
 ├── submission_hard.zip                  # Paquete autocontenido (36 KB)
-├── submission_mode_dificil.zip          # Paquete alternativo en raíz
 ├── tools/                               # Scripts de evaluación, CV, ablación y entrenamiento
 ├── paquet_participants_datathon_upc/    # Datos de entrenamiento, documentación y starter_kit oficial
 ├── requirements.txt                     # Dependencias Python del proyecto
