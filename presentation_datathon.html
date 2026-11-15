@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Datathon UPC 2026 · Modo Difícil</title>
+  <style>
+    :root {
+      --paper: #ffffff;
+      --paper-2: #f7f7f4;
+      --ink: #25283d;
+      --muted: #777169;
+      --accent: #0019ff;
+      --deep: #0c1dc2;
+      --tint: #eceeff;
+      --line: #dfe1e8;
+      --ok: #1fa63d;
+      --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%; width: 100%; overflow: hidden;
+      background: #0a0b10;
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 16:9 centered deck */
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+
+    .slide {
+      --w: min(96vw, calc(94vh * 16 / 9));
+      position: absolute;
+      width: var(--w);
+      height: calc(var(--w) * 9 / 16);
+      container-type: size;
+      background: var(--paper);
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(1.2cqw) scale(0.992);
+      transition: opacity 0.48s var(--ease), transform 0.48s var(--ease), visibility 0.48s;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Sheet grid + signature left blue bar */
+    .sheet {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 1.8cqw;
+      padding: 3.4cqw 5.4cqw 2.8cqw;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .sheet::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0.6cqw;
+      background: var(--accent);
+    }
+
+    .sheet--blue {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .sheet--blue::after { content: none; }
+    .sheet--blue .kicker,
+    .sheet--blue .ticket,
+    .sheet--blue .sub { color: rgba(255, 255, 255, 0.85); }
+    .sheet--blue .title,
+    .sheet--blue .display { color: #ffffff; }
+
+    /* Staggered reveal */
+    .r {
+      opacity: 0;
+      transform: translateY(1cqw);
+      transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+    }
+    .slide.is-active .r { opacity: 1; transform: translateY(0); }
+    .slide.is-active .d1 { transition-delay: 0.06s; }
+    .slide.is-active .d2 { transition-delay: 0.14s; }
+    .slide.is-active .d3 { transition-delay: 0.22s; }
+    .slide.is-active .d4 { transition-delay: 0.30s; }
+
+    /* Header & Footer furniture */
+    .furniture {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3cqw;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 1.25cqw;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+    }
+
+    .ticket {
+      font-family: var(--mono);
+      font-size: 1.05cqw;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-btn {
+      cursor: pointer;
+      padding: 0.35cqw 0.8cqw;
+      border: 1px solid var(--line);
+      border-radius: 0.4cqw;
+      background: var(--paper-2);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 1.05cqw;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .timer-btn:hover { border-color: var(--accent); background: var(--tint); }
+    .sheet--blue .timer-btn {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    /* Typography */
+    .content {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2cqw;
+    }
+
+    .display {
+      max-width: 78cqw;
+      font-size: 5.4cqw;
+      font-weight: 450;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .title {
+      max-width: 72cqw;
+      font-size: 3.85cqw;
+      font-weight: 450;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .sub {
+      max-width: 66cqw;
+      font-size: 1.85cqw;
+      line-height: 1.38;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+    }
+    .sub em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    code.pill {
+      display: inline-block;
+      margin-top: 1cqw;
+      padding: 0.6cqw 1.1cqw;
+      border-radius: 0.35cqw;
+      background: var(--tint);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 1.25cqw;
+      width: fit-content;
+    }
+
+    /* Numbered columns (RawTree style) */
+    .cols {
+      margin-block: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      list-style: none;
+    }
+
+    .cols > li {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6cqw;
+      padding: 0.4cqw 2.4cqw 0.4cqw 2.4cqw;
+      border-left: 3px solid var(--line);
+    }
+    .cols > li:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .no {
+      font-family: var(--mono);
+      font-size: 1.35cqw;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 1.2cqw;
+    }
+
+    .name {
+      font-size: 1.75cqw;
+      font-weight: 550;
+      line-height: 1.22;
+      color: var(--ink);
+    }
+
+    .text {
+      font-size: 1.3cqw;
+      line-height: 1.42;
+      color: var(--muted);
+    }
+
+    /* Oversized Stats (2x2 or 3-col) */
+    .stats-grid {
+      margin-block: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.6cqw 4cqw;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1.4cqw;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1.4cqw;
+    }
+
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 5.2cqw;
+      font-weight: 350;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      min-width: 19cqw;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-val.ok { color: var(--ok); }
+
+    .stat-cap b {
+      display: block;
+      font-size: 1.5cqw;
+      font-weight: 550;
+      color: var(--ink);
+      margin-bottom: 0.25cqw;
+    }
+    .stat-cap span {
+      display: block;
+      font-family: var(--mono);
+      font-size: 1.1cqw;
+      color: var(--muted);
+    }
+
+    /* Split layout with SVG */
+    .split {
+      margin-block: auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5cqw;
+      align-items: center;
+    }
+
+    .stack-list {
+      display: grid;
+      gap: 1.6cqw;
+    }
+
+    .stack-item {
+      border-left: 3px solid var(--accent);
+      padding-left: 1.4cqw;
+    }
+    .stack-item b {
+      display: block;
+      font-size: 1.55cqw;
+      font-weight: 550;
+      margin-bottom: 0.25cqw;
+    }
+    .stack-item span {
+      font-size: 1.25cqw;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .chart-box {
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      border-radius: 0.6cqw;
+      padding: 1.6cqw;
+    }
+
+    .wave-line {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 3;
+      stroke-dasharray: 560;
+      stroke-dashoffset: 560;
+      transition: stroke-dashoffset 1.3s var(--ease) 0.25s;
+    }
+    .slide.is-active .wave-line { stroke-dashoffset: 0; }
+
+    /* Comparison bars */
+    .bars {
+      display: grid;
+      gap: 1cqw;
+      margin-top: 0.6cqw;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 18cqw 1fr 7cqw;
+      align-items: center;
+      gap: 1.2cqw;
+      font-family: var(--mono);
+      font-size: 1.05cqw;
+    }
+    .bar-track {
+      height: 0.7cqw;
+      background: var(--line);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.9s var(--ease) 0.35s;
+    }
+    .slide.is-active .bar-fill.b93 { width: 93.1%; }
+    .slide.is-active .bar-fill.b100 { width: 100%; background: var(--muted); opacity: 0.45; }
+    .slide.is-active .bar-fill.b48 { width: 48.4%; background: var(--ok); }
+
+    /* Footer controls */
+    .brand-foot {
+      font-family: var(--mono);
+      font-size: 1.05cqw;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.7cqw;
+    }
+    .sheet--blue .brand-foot { color: #fff; }
+    .brand-sq {
+      width: 0.85cqw;
+      height: 0.85cqw;
+      background: var(--accent);
+      display: inline-block;
+    }
+    .sheet--blue .brand-sq { background: #fff; }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1cqw;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      width: 2.3cqw;
+      height: 2.3cqw;
+      border-radius: 0.35cqw;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 1.1cqw;
+      display: grid;
+      place-items: center;
+    }
+    .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .sheet--blue .nav-btn { border-color: rgba(255,255,255,0.35); color: #fff; }
+  </style>
+</head>
+<body>
+  <main class="deck">
+
+    <!-- SLIDE 1: PORTADA -->
+    <section class="slide is-active">
+      <div class="sheet sheet--blue">
+        <header class="furniture">
+          <span class="kicker r d1">DATATHON UPC 2026 · MODO DIFÍCIL</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content" style="justify-content: center;">
+          <h1 class="display r d2">Optimización de Batería bajo Incertidumbre</h1>
+          <p class="sub r d3" style="margin-top: 1.4cqw;">
+            Campus Nord UPC · 6.000 kWh / ±1.500 kW · η = 0,90 · Visibilidad de 3 horas
+          </p>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
+          <div class="nav-wrap">
+            <span class="ticket">01 / 06</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: EL DESAFÍO -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">01 · EL DESAFÍO</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Decidir cada hora viendo solo <em>3 horas</em> por delante.</h2>
+          <p class="sub r d2">Objetivo: 70% CO₂ + 30% Coste · Límites: 0 infracciones · &lt; 60 s · &lt; 25 MB</p>
+          <div class="split r d3">
+            <div class="stack-list">
+              <div class="stack-item">
+                <b>21 horas a ciegas</b>
+                <span>Solo conocemos t, t+1 y t+2 de precio/CO₂ y la lectura t−1 de consumo y meteo.</span>
+              </div>
+              <div class="stack-item">
+                <b>Incertidumbre solar diurna</b>
+                <span>De noche el error es ±40 kW; de día con nubes y PV sube hasta ±210 kW.</span>
+              </div>
+              <div class="stack-item">
+                <b>Riesgo de timeout inicial</b>
+                <span>42 modelos LightGBM por hora tardaban 37.24 s en local (muy cerca de 60 s).</span>
+              </div>
+            </div>
+            <div class="chart-box">
+              <svg viewBox="0 0 320 175" width="100%">
+                <rect x="16" y="28" width="60" height="114" fill="#eceeff" rx="4"/>
+                <rect x="76" y="28" width="228" height="114" fill="#f1f2f6" rx="4"/>
+                <line x1="76" y1="28" x2="76" y2="142" stroke="#0019ff" stroke-width="1.8" stroke-dasharray="4 3"/>
+                <line x1="16" y1="142" x2="304" y2="142" stroke="#dfe1e8" stroke-width="1.5"/>
+                <path class="wave-line" d="M16,120 C48,118 66,82 76,76 C106,52 132,38 164,44 C214,54 238,124 304,110" />
+                <circle cx="76" cy="76" r="4.5" fill="#0019ff"/>
+                <text x="20" y="18" fill="#0019ff" font-family="monospace" font-size="10.5" font-weight="700">3h Conocidas</text>
+                <text x="135" y="18" fill="#777169" font-family="monospace" font-size="10.5">21h Incertidumbre (Forecast + MPC)</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">02 / 06</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: NUESTRA SOLUCIÓN -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">02 · ARQUITECTURA</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Predicción por Bloques + <em>MPC Estocástico</em></h2>
+          <p class="sub r d2">Re-optimización horaria de 24 h ejecutando solo el paso inmediato.</p>
+          <ul class="cols r d3">
+            <li>
+              <span class="no">01</span>
+              <span class="name">Forecasting en 3 Bloques</span>
+              <span class="text">Agrupamos k=3..23 en 3 bloques (LightGBM + Ridge). De 42 a 6 llamadas por hora, entrenando con hasta 11× más datos.</span>
+            </li>
+            <li>
+              <span class="no">02</span>
+              <span class="name">MPC + Pesos Adaptativos</span>
+              <span class="text">Solver LP (HiGHS, presolve=False), escenarios de error solar (q_res), valor terminal cóncavo y ratio CO₂/Coste online.</span>
+            </li>
+            <li>
+              <span class="no">03</span>
+              <span class="name">Blindaje Físico Total</span>
+              <span class="text">Sanitización forward-fill ante NaN/inf, reinicio automático entre semanas y safety clamp con margen 1e−4 kW.</span>
+            </li>
+          </ul>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">03 / 06</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: RESULTADOS -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">03 · RESULTADOS VERIFICADOS</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2"><em>93.1%</em> del Oracle 24h en la mitad de tiempo.</h2>
+          <div class="stats-grid r d3">
+            <div class="stat-row">
+              <div class="stat-val">18.94</div>
+              <div class="stat-cap">
+                <b>Score fuera de muestra (2.016 h)</b>
+                <span>vs 20.35 Oracle 24h · −18.82% CO₂ / −19.23% Coste</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-val ok">18.04s</div>
+              <div class="stat-cap">
+                <b>Tiempo total 2.016 pasos</b>
+                <span>8.95 ms/paso · bajada desde 37.24 s (límite 60 s)</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-val">0</div>
+              <div class="stat-cap">
+                <b>Infracciones físicas</b>
+                <span>Cumplimiento estricto ±1.500 kW y [0, 6.000] kWh</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-val">3.28MB</div>
+              <div class="stat-cap">
+                <b>Tamaño de submission.zip</b>
+                <span>Bajado desde 10.76 MB · arranque en 152 ms</span>
+              </div>
+            </div>
+          </div>
+          <div class="bars r d4">
+            <div class="bar-row"><span>Agente vs Oracle 24h</span><div class="bar-track"><div class="bar-fill b93"></div></div><span>93.1%</span></div>
+            <div class="bar-row"><span>Tiempo vs Inicial</span><div class="bar-track"><div class="bar-fill b48"></div></div><span>18.04s</span></div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">04 / 06</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: MEJORAS FUTURAS -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">04 · LÍNEAS DE MEJORA</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Cómo cerrar el último <em>6.9%</em> hasta el Oracle.</h2>
+          <p class="sub r d2">Tres palancas concretas para ganar precisión y velocidad adicional:</p>
+          <ul class="cols r d3">
+            <li>
+              <span class="no">01</span>
+              <span class="name">Recurso en 2 Etapas</span>
+              <span class="text">Permitir decisiones de batería condicionadas por escenario en k=1..3, reduciendo el conservadurismo del MPC.</span>
+            </li>
+            <li>
+              <span class="no">02</span>
+              <span class="name">Previsión Meteo k=1..23</span>
+              <span class="text">Predecir irradiancia y temperatura futuras en lugar de persistir la lectura de t−1 para afinar PV y climatización.</span>
+            </li>
+            <li>
+              <span class="no">03</span>
+              <span class="name">HiGHS Persistente</span>
+              <span class="text">Mantener la instancia C++ del LP en memoria actualizando solo costes y RHS para bajar de 18 s a &lt; 10 s.</span>
+            </li>
+          </ul>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">05 / 06</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: CIERRE -->
+    <section class="slide">
+      <div class="sheet sheet--blue">
+        <header class="furniture">
+          <span class="kicker r d1">CONCLUSIÓN</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content" style="justify-content: center;">
+          <h1 class="display r d2">93.1% del Oracle · 18.04 s · 0 Infracciones.</h1>
+          <p class="sub r d3" style="margin-top: 1.4cqw;">
+            Rápido, matemáticamente sólido y blindado para producción. · Gracias, ¿preguntas?
+          </p>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
+          <div class="nav-wrap">
+            <span class="ticket">06 / 06</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    let cur = 0;
+
+    function go(n) {
+      const next = Math.max(0, Math.min(slides.length - 1, n));
+      if (next === cur) return;
+      slides[cur].classList.remove("is-active");
+      cur = next;
+      slides[cur].classList.add("is-active");
+    }
+
+    document.querySelectorAll("[data-prev]").forEach(b => b.onclick = () => go(cur - 1));
+    document.querySelectorAll("[data-next]").forEach(b => b.onclick = () => go(cur + 1));
+
+    document.onkeydown = (e) => {
+      if (["ArrowRight", " ", "PageDown", "ArrowDown"].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+      if (["ArrowLeft", "PageUp", "ArrowUp"].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+      if (e.key === "Home") go(0);
+      if (e.key === "End") go(slides.length - 1);
+      if (e.key.toLowerCase() === "f") {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+      }
+    };
+
+    const timerBtns = [...document.querySelectorAll("[data-timer]")];
+    let sec = 240, tid = null;
+    const draw = () => {
+      const txt = `⏱ ${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
+      timerBtns.forEach(b => b.textContent = txt);
+    };
+    timerBtns.forEach(b => b.onclick = () => {
+      if (tid) { clearInterval(tid); tid = null; sec = 240; draw(); }
+      else tid = setInterval(() => {
+        if (sec > 0) { sec--; draw(); }
+        else { clearInterval(tid); tid = null; }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
