@@ -889,32 +889,39 @@
           <div class="split r d3">
             <div class="stack-list">
               <div class="stack-item">
-                <b>Solver LP HiGHS (presolve=False)</b>
-                <span>Calcula en milisegundos cuánta potencia cargar (p_c) o descargar (p_d) cada hora respetando η = 0,90.</span>
+                <b>1. Solver LP HiGHS (presolve=False)</b>
+                <span>Traduce el problema a Programación Lineal y decide en milisegundos si cargar (p_c), descargar (p_d) o esperar, respetando η = 0,90.</span>
               </div>
               <div class="stack-item">
-                <b>Horizonte deslizante (MPC)</b>
-                <span>Igual que un GPS recalcula si hay tráfico, cada hora re-optimizamos 24 h pero solo aplicamos t=0.</span>
+                <b>2. Horizonte deslizante (MPC = GPS)</b>
+                <span>Traza la ruta óptima de 24 h, pero <strong>solo ejecuta la hora actual</strong>. Al llegar datos reales nuevos, recalcula toda la ruta.</span>
               </div>
               <div class="stack-item">
-                <b>Valor Terminal cóncavo</b>
-                <span>Pone precio a la energía restante al final de las 24 h para evitar que el solver vacíe la batería sin sentido.</span>
+                <b>3. Valor Terminal cóncavo</b>
+                <span>Pone valor a la energía restante en k=23 para no vaciar la batería sin sentido; los primeros kWh guardados valen más que los últimos.</span>
               </div>
             </div>
             <div class="chart-box">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-family:var(--mono); font-size:1.05cqw; font-weight:700; color:var(--ink);">Simulador de Ventana MPC</span>
+                <span style="font-family:var(--mono); font-size:1.02cqw; font-weight:700; color:var(--ink);">Simulador de Ventana MPC</span>
                 <button class="seg-btn is-on" id="s5-step-btn">Avanzar 1 hora →</button>
               </div>
               <div class="mpc-track" id="s5-track"></div>
-              <p id="s5-caption" style="font-family:var(--mono); font-size:1.02cqw; color:var(--deep); background:var(--tint); padding:0.7cqw 0.9cqw; border-radius:0.4cqw;">
-                t=0: HiGHS optimiza t=0..23 → ejecutamos SOLO t=0 y guardamos SoC con valor terminal.
+              <p id="s5-caption" style="font-family:var(--mono); font-size:0.98cqw; color:var(--deep); background:var(--tint); padding:0.6cqw 0.85cqw; border-radius:0.4cqw;">
+                Paso t+0: HiGHS optimiza 24 h hacia adelante → ejecutamos SOLO t+0 y avanzamos.
               </p>
-              <svg viewBox="0 0 320 72" width="100%">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.2cqw;">
+                <span style="font-family:var(--mono); font-size:0.95cqw; font-weight:700; color:var(--ink);">Efecto al final de las 24 h:</span>
+                <div class="seg-bar" id="s5-vt-mode" style="padding:0.2cqw;">
+                  <button class="seg-btn is-on" data-s5vt="with" style="font-size:0.88cqw; padding:0.28cqw 0.65cqw;">Con Valor Terminal</button>
+                  <button class="seg-btn" data-s5vt="without" style="font-size:0.88cqw; padding:0.28cqw 0.65cqw;">Sin Valor Terminal</button>
+                </div>
+              </div>
+              <svg viewBox="0 0 320 74" width="100%">
                 <line x1="16" y1="58" x2="304" y2="58" stroke="#dfe1e8" stroke-width="1.2"/>
-                <path d="M20,56 Q95,18 295,12" fill="none" stroke="#059669" stroke-width="2.5"/>
-                <text x="20" y="16" fill="#059669" font-family="monospace" font-size="9.5" font-weight="700">Valor Terminal Cóncavo (reserva batería valiosa)</text>
-                <text x="20" y="68" fill="#64748b" font-family="monospace" font-size="8.5">0 kWh (vacía) ───────────────────────► 6.000 kWh (llena)</text>
+                <path id="s5-vt-path" d="M20,56 Q95,18 295,12" fill="none" stroke="#059669" stroke-width="2.5"/>
+                <text id="s5-vt-label" x="20" y="16" fill="#059669" font-family="monospace" font-size="9.5" font-weight="700">Reserva energía valiosa para el día siguiente</text>
+                <text x="20" y="69" fill="#64748b" font-family="monospace" font-size="8.5">0 kWh (vacía) ───────────────────────► 6.000 kWh (llena)</text>
               </svg>
             </div>
           </div>
@@ -1273,6 +1280,24 @@
       mpcStep = (mpcStep + 1) % 5;
       renderMpc();
     };
+
+    /* Slide 6 interactive Terminal Value toggle */
+    document.querySelectorAll("[data-s5vt]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s5vt]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const withVt = btn.dataset.s5vt === "with";
+        const path = document.getElementById("s5-vt-path");
+        const label = document.getElementById("s5-vt-label");
+        path.setAttribute("d", withVt ? "M20,56 Q95,18 295,12" : "M20,16 L200,24 L295,57");
+        path.setAttribute("stroke", withVt ? "#059669" : "#d97706");
+        path.setAttribute("stroke-dasharray", withVt ? "none" : "5 3");
+        label.textContent = withVt
+          ? "Reserva energía valiosa para el día siguiente"
+          : "Sin valor terminal: vacía la batería a 0 kWh en k=23";
+        label.setAttribute("fill", withVt ? "#059669" : "#b45309");
+      };
+    });
 
     /* Slide 6 interactive fault simulator */
     document.querySelectorAll("[data-s6]").forEach(btn => {
