@@ -758,7 +758,7 @@
         <div class="content">
           <h2 class="title r d2">De 42 modelos por hora a <em>3 Bloques</em> (6 llamadas).</h2>
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1cqw;" class="r d2">
-            <p class="sub">Agrupamos el horizonte k=3..23 por similitud física para ganar velocidad y datos de entrenamiento.</p>
+            <p class="sub">Agrupamos k=3..23 en 3 bloques pasando <em>k</em> como entrada: <strong>3 bloques × 2 (Precio y CO₂) = 6 llamadas/h</strong>.</p>
             <div class="seg-bar" id="s3-mode">
               <button class="seg-btn is-on" data-s3="blocks">Después: 3 Bloques (6/h)</button>
               <button class="seg-btn" data-s3="naive">Antes: Hora a hora (42/h)</button>
@@ -771,17 +771,17 @@
               <span class="h-desc">Precio y CO₂ reales dados por el entorno. Solo predecimos consumo/PV inmediato.</span>
             </div>
             <div class="h-block">
-              <span class="h-tag">BLOQUE 1 · k = 3..6</span>
+              <span class="h-tag">BLOQUE 1 · k = 3..6 (4×)</span>
               <span class="h-name">Corto Plazo</span>
               <span class="h-desc">4 horas cercanas donde aún pesa mucho la inercia de la lectura t−1.</span>
             </div>
             <div class="h-block">
-              <span class="h-tag">BLOQUE 2 · k = 7..12</span>
+              <span class="h-tag">BLOQUE 2 · k = 7..12 (6×)</span>
               <span class="h-name">Medio Plazo</span>
               <span class="h-desc">6 horas de transición (cambio de franja tarifaria o curva solar).</span>
             </div>
             <div class="h-block">
-              <span class="h-tag">BLOQUE 3 · k = 13..23</span>
+              <span class="h-tag">BLOQUE 3 · k = 13..23 (11×)</span>
               <span class="h-name">Largo Plazo</span>
               <span class="h-desc">11 horas finales donde mandan el ciclo diario (hora, día, calendario).</span>
             </div>
@@ -789,11 +789,11 @@
           <div class="kpi-strip r d4">
             <div class="kpi-card">
               <b id="s3-k1">6 llamadas / hora</b>
-              <span>Bajamos de 42 llamadas LightGBM a solo 6 por cada paso horario.</span>
+              <span>3 bloques × 2 variables (Precio y CO₂) en vez de 21 horas × 2 = 42.</span>
             </div>
             <div class="kpi-card">
-              <b id="s3-k2">11× más datos</b>
-              <span>Cada bloque agrupa varios horizontes, evitando sobreajuste con pocos datos.</span>
+              <b id="s3-k2">Hasta 11× más datos</b>
+              <span>El Bloque 3 junta 11 horizontes en un único modelo, evitando sobreajuste.</span>
             </div>
             <div class="kpi-card">
               <b id="s3-k3">37.24 s → 18.04 s</b>
