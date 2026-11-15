@@ -598,14 +598,14 @@
         </header>
         <div class="content" style="justify-content: center;">
           <h1 class="display r d2">Optimización de Batería bajo Incertidumbre</h1>
-          <p class="sub r d3" style="margin-top: 1.4cqw;">
-            Campus Nord UPC · 6.000 kWh / ±1.500 kW · η = 0,90 · Visibilidad de 3 horas
+          <p class="sub r d3" style="margin-top: 1.4cqw; font-size: 2.05cqw;">
+            <strong>Los Rojos</strong> · Alex Garcia &amp; Arnau Cassú
           </p>
         </div>
         <footer class="furniture">
-          <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
+          <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · AED × UPC Sostenible</span>
           <div class="nav-wrap">
-            <span class="ticket">01 / 09</span>
+            <span class="ticket">01 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -613,11 +613,81 @@
       </div>
     </section>
 
-    <!-- SLIDE 2: EL DESAFÍO (INTERACTIVO: DÍA VS NOCHE) -->
+    <!-- SLIDE 2: FORMULACIÓN VISUAL DEL PROBLEMA -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">01 · EL DESAFÍO</span>
+          <span class="kicker r d1">01 · FORMULACIÓN DEL PROBLEMA</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Qué decidimos cada hora en el <em>Campus Nord UPC</em>.</h2>
+          <div class="split r d3" style="grid-template-columns: 1.12fr 0.88fr;">
+            <div class="chart-box" style="padding: 1.3cqw;">
+              <svg viewBox="0 0 360 190" width="100%">
+                <!-- Solar + Building -> Grid + Battery -->
+                <rect x="14" y="18" width="96" height="44" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+                <text x="62" y="36" text-anchor="middle" fill="#065f46" font-family="monospace" font-size="10" font-weight="700">SOLAR (PV)</text>
+                <text x="62" y="51" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="8.5">Generación limpia</text>
+
+                <rect x="14" y="76" width="96" height="44" rx="5" fill="#ffffff" stroke="#dfe1e8" stroke-width="1.5"/>
+                <text x="62" y="94" text-anchor="middle" fill="#1e293b" font-family="monospace" font-size="10" font-weight="700">EDIFICIOS</text>
+                <text x="62" y="109" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="8.5">Consumo (Load)</text>
+
+                <!-- Arrows to node -->
+                <line x1="110" y1="40" x2="152" y2="68" stroke="#059669" stroke-width="2"/>
+                <line x1="110" y1="98" x2="152" y2="70" stroke="#64748b" stroke-width="2"/>
+
+                <!-- Decision Node -->
+                <rect x="152" y="42" width="100" height="54" rx="6" fill="#059669"/>
+                <text x="202" y="64" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="10.5" font-weight="700">DECISIÓN t</text>
+                <text x="202" y="80" text-anchor="middle" fill="#ecfdf5" font-family="monospace" font-size="9">p_c (carga) / p_d</text>
+
+                <!-- Arrow to Battery -->
+                <line x1="202" y1="96" x2="202" y2="128" stroke="#059669" stroke-width="2.2"/>
+                <rect x="132" y="128" width="140" height="48" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+                <text x="202" y="147" text-anchor="middle" fill="#065f46" font-family="monospace" font-size="10" font-weight="700">BATERÍA</text>
+                <text x="202" y="163" text-anchor="middle" fill="#1e293b" font-family="monospace" font-size="8.5">6.000 kWh · ±1.500 kW · η=0,90</text>
+
+                <!-- Arrow to Grid -->
+                <line x1="252" y1="69" x2="278" y2="69" stroke="#1e293b" stroke-width="2"/>
+                <rect x="278" y="42" width="70" height="54" rx="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5"/>
+                <text x="313" y="64" text-anchor="middle" fill="#1e293b" font-family="monospace" font-size="10" font-weight="700">RED</text>
+                <text x="313" y="80" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="8.5">€ + CO₂</text>
+              </svg>
+            </div>
+            <div class="stack-list">
+              <div class="stack-item">
+                <b>Función Objetivo</b>
+                <span>Minimizar <strong>70% emisiones CO₂ + 30% coste eléctrico</strong> de la red comprando en horas baratas/limpias y descargando en punta.</span>
+              </div>
+              <div class="stack-item">
+                <b>Reglas Físicas Estrictas</b>
+                <span>Capacidad [0, 6.000] kWh, potencia [−1.500, +1.500] kW y eficiencia η = 0,90 en carga/descarga.</span>
+              </div>
+              <div class="stack-item">
+                <b>Restricciones del Reto</b>
+                <span>Visibilidad de solo 3 horas · <strong>0 infracciones</strong> · ejecución &lt; 60 s · paquete &lt; 25 MB.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · Campus Nord</span>
+          <div class="nav-wrap">
+            <span class="ticket">02 / 10</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: EL DESAFÍO (INTERACTIVO: DÍA VS NOCHE) -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">02 · EL DESAFÍO</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -670,7 +740,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">02 / 09</span>
+            <span class="ticket">03 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -682,7 +752,7 @@
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">02 · REDUCCIÓN DE MODELOS</span>
+          <span class="kicker r d1">03 · REDUCCIÓN DE MODELOS</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -734,7 +804,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">03 / 09</span>
+            <span class="ticket">04 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -746,7 +816,7 @@
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">03 · MACHINE LEARNING HÍBRIDO</span>
+          <span class="kicker r d1">04 · MACHINE LEARNING HÍBRIDO</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -799,7 +869,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">04 / 09</span>
+            <span class="ticket">05 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -811,7 +881,7 @@
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">04 · OPTIMIZACIÓN MPC + HiGHS</span>
+          <span class="kicker r d1">05 · OPTIMIZACIÓN MPC + HiGHS</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -852,7 +922,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">05 / 09</span>
+            <span class="ticket">06 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -864,7 +934,7 @@
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">05 · ROBUSTEZ Y SEGURIDAD</span>
+          <span class="kicker r d1">06 · ROBUSTEZ Y SEGURIDAD</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -897,7 +967,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">06 / 09</span>
+            <span class="ticket">07 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -909,7 +979,7 @@
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">06 · RESULTADOS VERIFICADOS</span>
+          <span class="kicker r d1">07 · RESULTADOS VERIFICADOS</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -953,7 +1023,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">07 / 09</span>
+            <span class="ticket">08 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -965,7 +1035,7 @@
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">07 · LÍNEAS DE MEJORA</span>
+          <span class="kicker r d1">08 · LÍNEAS DE MEJORA</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -992,7 +1062,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">08 / 09</span>
+            <span class="ticket">09 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -1016,7 +1086,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
           <div class="nav-wrap">
-            <span class="ticket">09 / 09</span>
+            <span class="ticket">10 / 10</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
