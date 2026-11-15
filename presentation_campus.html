@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datathon UPC 2026 — Propuesta Energía &amp; Gráficos</title>
+  <style>
+    :root {
+      --bg: #071418;
+      --panel: #0d2127;
+      --border: rgba(45, 212, 191, 0.16);
+      --text: #ecfeff;
+      --muted: #94a3b8;
+      --teal: #2dd4bf;
+      --lime: #a3e635;
+      --sky: #38bdf8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; width: 100%; overflow: hidden;
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    }
+
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 56px; padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 13px; color: var(--muted); z-index: 10;
+    }
+    .timer {
+      padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--panel); cursor: pointer;
+    }
+
+    .deck { position: relative; width: 100%; height: 100%; }
+    .slide {
+      position: absolute; inset: 0; padding: 72px 8vw 72px;
+      display: flex; flex-direction: column; justify-content: center;
+      opacity: 0; visibility: hidden; transform: scale(0.97);
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.55s;
+    }
+    .slide.active { opacity: 1; visibility: visible; transform: scale(1); }
+
+    .r { opacity: 0; transform: translateY(14px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .slide.active .r { opacity: 1; transform: translateY(0); }
+    .slide.active .d1 { transition-delay: 0.08s; }
+    .slide.active .d2 { transition-delay: 0.18s; }
+    .slide.active .d3 { transition-delay: 0.28s; }
+    .slide.active .d4 { transition-delay: 0.38s; }
+
+    .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+    h1 { font-size: clamp(2.3rem, 4.2vw, 3.6rem); font-weight: 800; line-height: 1.08; max-width: 850px; }
+    h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 750; line-height: 1.15; }
+    .lead { margin-top: 14px; font-size: 1.15rem; color: var(--muted); max-width: 720px; line-height: 1.55; }
+
+    .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: center; margin-top: 28px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+    }
+    .card h3 { font-size: 1.08rem; margin-bottom: 8px; color: var(--text); }
+    .card p { font-size: 0.94rem; color: var(--muted); line-height: 1.5; }
+
+    /* Animated SVG Gauge */
+    .gauge-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .gauge-bg { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 14; }
+    .gauge-fg {
+      fill: none; stroke: var(--teal); stroke-width: 14; stroke-linecap: round;
+      stroke-dasharray: 440; stroke-dashoffset: 440;
+      transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+    }
+    .slide.active .gauge-fg { stroke-dashoffset: 30.4; } /* ~93.1% of 440 */
+
+    /* Animated Wave Path */
+    .wave-path {
+      fill: none; stroke: var(--teal); stroke-width: 3;
+      stroke-dasharray: 600; stroke-dashoffset: 600;
+      transition: stroke-dashoffset 1.4s ease 0.25s;
+    }
+    .slide.active .wave-path { stroke-dashoffset: 0; }
+
+    .controls {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px; padding: 0 36px;
+      display: flex; align-items: center; justify-content: space-between; z-index: 10;
+    }
+    .dots { display: flex; gap: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; }
+    .dot.active { width: 24px; background: var(--teal); }
+    .btns { display: flex; gap: 8px; align-items: center; }
+    .btns button {
+      width: 36px; height: 36px; border-radius: 9px; border: 1px solid var(--border);
+      background: var(--panel); color: var(--text); cursor: pointer;
+    }
+    @media (max-width: 860px) {
+      .split, .grid-3 { grid-template-columns: 1fr; }
+      .slide { overflow-y: auto; justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span>Campus Nord · Energía &amp; Optimización</span>
+    <span class="timer" id="timer">⏱ 04:00</span>
+  </header>
+
+  <main class="deck">
+    <!-- 1 -->
+    <section class="slide active">
+      <div class="tag r d1">Datathon UPC 2026 · Modo Difícil</div>
+      <h1 class="r d2">Descarbonizar el Campus con Visión de Solo 3 Horas</h1>
+      <p class="lead r d3">
+        Batería de <strong>6.000 kWh / ±1.500 kW</strong> (η = 0,90). Optimizamos
+        <strong>70% CO₂ + 30% Coste</strong> con 0 infracciones y menos de 60 s por episodio.
+      </p>
+      <div class="grid-3 r d4">
+        <div class="card"><h3>3 h de Mercado</h3><p>Solo conocemos t, t+1 y t+2 de precio PVPC y CO₂.</p></div>
+        <div class="card"><h3>Telemetría t−1</h3><p>Última hora real de consumo, solar y meteorología.</p></div>
+        <div class="card"><h3>2.016 Pasos</h3><p>12 semanas simuladas hora a hora sin fuga de datos.</p></div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide">
+      <div class="tag r d1">01 · El Desafío</div>
+      <h2 class="r d2">Incertidumbre diurna vs. límite de tiempo</h2>
+      <div class="split r d3">
+        <div style="display: grid; gap: 16px;">
+          <div class="card"><h3>Arbitraje a ciegas</h3><p>Decidir cuándo cargar o guardar energía sin ver las próximas 21 horas.</p></div>
+          <div class="card"><h3>Error solar heterocedástico</h3><p>De día la varianza de carga neta crece hasta ±210 kW frente a ±40 kW de noche.</p></div>
+          <div class="card"><h3>Latencia crítica</h3><p>El diseño inicial con 42 modelos LightGBM tardaba 37.24 s en local.</p></div>
+        </div>
+        <div class="card" style="text-align: center;">
+          <svg viewBox="0 0 320 170" width="100%">
+            <line x1="20" y1="140" x2="300" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <path class="wave-path" d="M20,120 C70,120 90,35 145,40 C200,45 220,125 300,110" />
+            <circle cx="105" cy="63" r="5" fill="#a3e635"/>
+            <text x="20" y="24" fill="#94a3b8" font-size="11">Horizonte conocido: 3h | Incertidumbre: 21h</text>
+          </svg>
+          <p style="margin-top: 8px; font-size: 0.9rem; color: var(--muted);">
+            Re-optimización horaria (MPC) sobre ventana móvil de 24 h
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide">
+      <div class="tag r d1">02 · Nuestra Solución</div>
+      <h2 class="r d2">Modelado por Bloques + MPC Estocástico HiGHS</h2>
+      <div class="grid-3 r d3">
+        <div class="card">
+          <h3>1. Forecasting Compacto</h3>
+          <p>3 bloques horarios (LightGBM + Ridge) para precio y CO₂. Pasa de 42 a 6 llamadas por paso y entrena con hasta 11× más datos.</p>
+        </div>
+        <div class="card">
+          <h3>2. MPC + Pesos Online</h3>
+          <p>Escenarios de error según generación PV prevista, calibración alpha_k y ajuste dinámico del ratio CO₂/Coste del episodio.</p>
+        </div>
+        <div class="card">
+          <h3>3. Blindaje Físico</h3>
+          <p>Sanitización de NaN/inf, reinicio ante saltos entre semanas y safety clamp con margen 1e−4 kW.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide">
+      <div class="tag r d1">03 · Resultados</div>
+      <h2 class="r d2">Cerca del límite teórico en 18 segundos</h2>
+      <div class="split r d3">
+        <div class="card gauge-wrap">
+          <svg width="170" height="170" viewBox="0 0 170 170">
+            <circle class="gauge-bg" cx="85" cy="85" r="70"/>
+            <circle class="gauge-fg" cx="85" cy="85" r="70" transform="rotate(-90 85 85)"/>
+            <text x="85" y="82" text-anchor="middle" fill="#ecfeff" font-size="28" font-weight="800">93.1%</text>
+            <text x="85" y="104" text-anchor="middle" fill="#94a3b8" font-size="11">del Oracle 24h</text>
+          </svg>
+          <p style="margin-top: 10px; font-size: 0.95rem;"><strong>18.94 pts</strong> vs <strong>20.35 pts</strong> (Oracle)</p>
+        </div>
+        <div style="display: grid; gap: 14px;">
+          <div class="card"><h3>−18.82% CO₂ y −19.23% Coste</h3><p>Evaluado fuera de muestra sobre 2.016 h de train.</p></div>
+          <div class="card"><h3>18.04 s totales (8.95 ms/paso)</h3><p>Más de 2× más rápido que el inicio (37.24 s) y bajo el límite de 60 s.</p></div>
+          <div class="card"><h3>0 Infracciones · 3.28 MB</h3><p>Paquete reducido desde 10.76 MB y validado por check_submission.py.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide">
+      <div class="tag r d1">04 · Evolución</div>
+      <h2 class="r d2">Posibles mejoras para el último 6.9%</h2>
+      <div class="grid-3 r d3">
+        <div class="card"><h3>Recurso en 2 Etapas</h3><p>Variables de batería por escenario en k=1..3 para eliminar el sesgo conservador.</p></div>
+        <div class="card"><h3>Previsión Meteorológica</h3><p>Estimar irradiancia y temperatura futuras en k=1..23 en lugar de persistir t−1.</p></div>
+        <div class="card"><h3>HiGHS Persistente</h3><p>Reutilizar la instancia C++ del LP cambiando solo costes y RHS (&lt; 10 s totales).</p></div>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide">
+      <div class="tag r d1">Conclusión</div>
+      <h1 class="r d2">93.1% del Oracle · 18.04 s · 0 Infracciones</h1>
+      <p class="lead r d3">Una arquitectura equilibrada entre precisión matemática, robustez física y margen de cómputo.</p>
+      <p class="lead r d4" style="color: var(--teal); font-weight: 600;">Muchas gracias · ¿Preguntas?</p>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <div class="dots" id="dots"></div>
+    <div class="btns">
+      <span id="cnt" style="font-size: 13px; color: var(--muted); margin-right: 6px;">1 / 6</span>
+      <button id="prev">←</button>
+      <button id="next">→</button>
+    </div>
+  </footer>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const dotsEl = document.getElementById("dots");
+    const cnt = document.getElementById("cnt");
+    let cur = 0;
+    slides.forEach((_, i) => {
+      const d = document.createElement("div");
+      d.className = "dot" + (i === 0 ? " active" : "");
+      d.onclick = () => go(i);
+      dotsEl.appendChild(d);
+    });
+    const dots = [...document.querySelectorAll(".dot")];
+    function go(n) {
+      const next = Math.max(0, Math.min(slides.length - 1, n));
+      if (next === cur) return;
+      slides[cur].classList.remove("active"); dots[cur].classList.remove("active");
+      cur = next;
+      slides[cur].classList.add("active"); dots[cur].classList.add("active");
+      cnt.textContent = `${cur + 1} / ${slides.length}`;
+    }
+    document.getElementById("prev").onclick = () => go(cur - 1);
+    document.getElementById("next").onclick = () => go(cur + 1);
+    document.onkeydown = (e) => {
+      if (["ArrowRight", " ", "PageDown"].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+      if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    };
+    const timer = document.getElementById("timer");
+    let sec = 240, tid = null;
+    const draw = () => { timer.textContent = `⏱ ${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`; };
+    timer.onclick = () => {
+      if (tid) { clearInterval(tid); tid = null; sec = 240; draw(); }
+      else tid = setInterval(() => { if (sec > 0) { sec--; draw(); } else { clearInterval(tid); tid = null; } }, 1000);
+    };
+  </script>
+</body>
+</html>
