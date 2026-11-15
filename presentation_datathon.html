@@ -605,7 +605,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · AED × UPC Sostenible</span>
           <div class="nav-wrap">
-            <span class="ticket">01 / 10</span>
+            <span class="ticket">01 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -675,7 +675,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · Campus Nord</span>
           <div class="nav-wrap">
-            <span class="ticket">02 / 10</span>
+            <span class="ticket">02 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -740,7 +740,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">03 / 10</span>
+            <span class="ticket">03 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -804,7 +804,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">04 / 10</span>
+            <span class="ticket">04 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -869,7 +869,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">05 / 10</span>
+            <span class="ticket">05 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -922,7 +922,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">06 / 10</span>
+            <span class="ticket">06 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -967,7 +967,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">07 / 10</span>
+            <span class="ticket">07 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -975,55 +975,111 @@
       </div>
     </section>
 
-    <!-- SLIDE 7: RESULTADOS -->
+    <!-- SLIDE 8: RESULTADOS DE IMPACTO Y SCORE (INTERACTIVO) -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">07 · RESULTADOS VERIFICADOS</span>
+          <span class="kicker r d1">07 · RESULTADOS: IMPACTO Y SCORE</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
-          <h2 class="title r d2"><em>93.1%</em> del Oracle 24h en la mitad de tiempo.</h2>
+          <h2 class="title r d2"><em>93.1%</em> del Oracle 24h en evaluación fuera de muestra.</h2>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1cqw;" class="r d2">
+            <p class="sub">Validado paso a paso sobre 2.016 horas reales (84 días) con 0 infracciones.</p>
+            <div class="seg-bar" id="s8-mode">
+              <button class="seg-btn is-on" data-s8="score">Score vs Oracle 24h</button>
+              <button class="seg-btn" data-s8="impact">Ahorro CO₂ y Coste</button>
+            </div>
+          </div>
+          <div class="split r d3">
+            <div class="stats-grid" style="grid-template-columns: 1fr; gap: 1.5cqw;">
+              <div class="stat-row">
+                <div class="stat-val" id="s8-v1">18.94</div>
+                <div class="stat-cap">
+                  <b id="s8-t1">Nuestro Agente (visibilidad 3h)</b>
+                  <span id="s8-d1">Frente a 20.35 del Oracle con futuro perfecto de 24 h</span>
+                </div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-val ok" id="s8-v2">93.1%</div>
+                <div class="stat-cap">
+                  <b id="s8-t2">Eficiencia respecto al óptimo teórico</b>
+                  <span id="s8-d2">Solo 6.9% de brecha pese a 21 horas de incertidumbre</span>
+                </div>
+              </div>
+            </div>
+            <div class="chart-box">
+              <span style="font-family:var(--mono); font-size:1.05cqw; font-weight:700; color:var(--ink);" id="s8-chart-title">Comparativa de Score (2.016 h)</span>
+              <div class="bars" style="margin-top:0.2cqw;">
+                <div class="bar-row" style="grid-template-columns: 13cqw 1fr 6.5cqw;">
+                  <span id="s8-l1">Oracle 24h</span>
+                  <div class="bar-track"><div class="bar-fill" id="s8-b1" style="width:100%; background:var(--muted); opacity:0.45;"></div></div>
+                  <span id="s8-n1">20.35</span>
+                </div>
+                <div class="bar-row" style="grid-template-columns: 13cqw 1fr 6.5cqw;">
+                  <span id="s8-l2">Nuestro Agente</span>
+                  <div class="bar-track"><div class="bar-fill" id="s8-b2" style="width:93.1%; background:var(--accent);"></div></div>
+                  <span id="s8-n2">18.94</span>
+                </div>
+              </div>
+              <p style="font-family:var(--mono); font-size:0.98cqw; color:var(--deep); background:var(--tint); padding:0.65cqw 0.85cqw; border-radius:0.4cqw;" id="s8-note">
+                −18.82% en emisiones CO₂ y −19.23% en coste eléctrico acumulado.
+              </p>
+            </div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · Campus Nord</span>
+          <div class="nav-wrap">
+            <span class="ticket">08 / 11</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: EFICIENCIA COMPUTACIONAL (INTERACTIVO: ANTES VS DESPUÉS) -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">08 · EFICIENCIA: TIEMPO Y PESO</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Mitad de tiempo (<em>18.04 s</em>) y un tercio de peso (<em>3.28 MB</em>).</h2>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1cqw;" class="r d2">
+            <p class="sub">Holgura total frente a los límites del concurso (60 s y 25 MB).</p>
+            <div class="seg-bar" id="s9-mode">
+              <button class="seg-btn is-on" data-s9="after">Después (Optimizado)</button>
+              <button class="seg-btn" data-s9="before">Antes (42 modelos/h)</button>
+            </div>
+          </div>
           <div class="stats-grid r d3">
             <div class="stat-row">
-              <div class="stat-val">18.94</div>
+              <div class="stat-val ok" id="s9-time">18.04s</div>
               <div class="stat-cap">
-                <b>Score fuera de muestra (2.016 h)</b>
-                <span>vs 20.35 Oracle 24h · −18.82% CO₂ / −19.23% Coste</span>
+                <b>Tiempo total (2.016 pasos)</b>
+                <span id="s9-time-sub">8.95 ms/paso · límite máximo: 60 s</span>
               </div>
             </div>
             <div class="stat-row">
-              <div class="stat-val ok">18.04s</div>
+              <div class="stat-val" id="s9-size">3.28MB</div>
               <div class="stat-cap">
-                <b>Tiempo total 2.016 pasos</b>
-                <span>8.95 ms/paso · bajada desde 37.24 s (límite 60 s)</span>
-              </div>
-            </div>
-            <div class="stat-row">
-              <div class="stat-val">0</div>
-              <div class="stat-cap">
-                <b>Infracciones físicas</b>
-                <span>Cumplimiento estricto ±1.500 kW y [0, 6.000] kWh</span>
-              </div>
-            </div>
-            <div class="stat-row">
-              <div class="stat-val">3.28MB</div>
-              <div class="stat-cap">
-                <b>Tamaño de submission.zip</b>
-                <span>Bajado desde 10.76 MB · arranque en 152 ms</span>
+                <b>Tamaño submission.zip</b>
+                <span id="s9-size-sub">Arranque en 152 ms · límite máximo: 25 MB</span>
               </div>
             </div>
           </div>
           <div class="bars r d4">
-            <div class="bar-row"><span>Agente vs Oracle 24h</span><div class="bar-track"><div class="bar-fill b93"></div></div><span>93.1%</span></div>
-            <div class="bar-row"><span>Tiempo vs Inicial</span><div class="bar-track"><div class="bar-fill b48"></div></div><span>18.04s</span></div>
-            <div class="bar-row"><span>Tamaño vs Inicial</span><div class="bar-track"><div class="bar-fill b30"></div></div><span>3.28 MB</span></div>
+            <div class="bar-row"><span>Tiempo vs Límite 60s</span><div class="bar-track"><div class="bar-fill" id="s9-bt" style="width:30.1%; background:var(--ok);"></div></div><span id="s9-pt">30.1%</span></div>
+            <div class="bar-row"><span>Peso vs Límite 25MB</span><div class="bar-track"><div class="bar-fill" id="s9-bs" style="width:13.1%; background:var(--accent);"></div></div><span id="s9-ps">13.1%</span></div>
           </div>
         </div>
         <footer class="furniture">
-          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · Campus Nord</span>
           <div class="nav-wrap">
-            <span class="ticket">08 / 10</span>
+            <span class="ticket">09 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -1031,38 +1087,41 @@
       </div>
     </section>
 
-    <!-- SLIDE 8: MEJORAS FUTURAS -->
+    <!-- SLIDE 10: MEJORAS FUTURAS (INTERACTIVO) -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">08 · LÍNEAS DE MEJORA</span>
+          <span class="kicker r d1">09 · LÍNEAS DE MEJORA</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
           <h2 class="title r d2">Cómo cerrar el último <em>6.9%</em> hasta el Oracle.</h2>
-          <p class="sub r d2">Tres palancas concretas para ganar precisión y velocidad adicional:</p>
-          <ul class="cols r d3">
-            <li>
-              <span class="no">01</span>
+          <p class="sub r d2">Pulsa cada palanca para ver qué problema resuelve y su impacto esperado:</p>
+          <ul class="cols r d3" id="s10-cols">
+            <li data-s10="0" style="cursor:pointer; background:var(--tint); border-radius:0.4cqw; padding:1.1cqw;">
+              <span class="no">01 · DECISIÓN</span>
               <span class="name">Recurso en 2 Etapas</span>
               <span class="text">Permitir decisiones de batería condicionadas por escenario en k=1..3, reduciendo el conservadurismo del MPC.</span>
             </li>
-            <li>
-              <span class="no">02</span>
+            <li data-s10="1" style="cursor:pointer; border-radius:0.4cqw; padding:1.1cqw;">
+              <span class="no">02 · DATOS</span>
               <span class="name">Previsión Meteo k=1..23</span>
               <span class="text">Predecir irradiancia y temperatura futuras en lugar de persistir la lectura de t−1 para afinar PV y climatización.</span>
             </li>
-            <li>
-              <span class="no">03</span>
+            <li data-s10="2" style="cursor:pointer; border-radius:0.4cqw; padding:1.1cqw;">
+              <span class="no">03 · SOLVER</span>
               <span class="name">HiGHS Persistente</span>
               <span class="text">Mantener la instancia C++ del LP en memoria actualizando solo costes y RHS para bajar de 18 s a &lt; 10 s.</span>
             </li>
           </ul>
+          <p id="s10-detail" class="r d4" style="font-family:var(--mono); font-size:1.1cqw; color:var(--deep); background:var(--tint); padding:0.75cqw 1cqw; border-radius:0.4cqw;">
+            Impacto 01: Evita decisiones demasiado prudentes ante nubes puntuales y acerca el score al Oracle 24h.
+          </p>
         </div>
         <footer class="furniture">
-          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · Campus Nord</span>
           <div class="nav-wrap">
-            <span class="ticket">09 / 10</span>
+            <span class="ticket">10 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -1070,7 +1129,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 9: CIERRE -->
+    <!-- SLIDE 11: CIERRE -->
     <section class="slide">
       <div class="sheet sheet--blue">
         <header class="furniture">
@@ -1080,13 +1139,13 @@
         <div class="content" style="justify-content: center;">
           <h1 class="display r d2">93.1% del Oracle · 18.04 s · 0 Infracciones.</h1>
           <p class="sub r d3" style="margin-top: 1.4cqw;">
-            Rápido, matemáticamente sólido y blindado para producción. · Gracias, ¿preguntas?
+            Los Rojos · Rápido, matemáticamente sólido y blindado para producción. · ¿Preguntas?
           </p>
         </div>
         <footer class="furniture">
-          <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
+          <span class="brand-foot"><span class="brand-sq"></span>Los Rojos · AED × UPC Sostenible</span>
           <div class="nav-wrap">
-            <span class="ticket">10 / 10</span>
+            <span class="ticket">11 / 11</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -1225,6 +1284,62 @@
         document.getElementById("s6-st1").textContent = isFault ? "PICO SOLAR DETECTADO" : "ACTIVO · ESCENARIOS q_res";
         document.getElementById("s6-st2").textContent = isFault ? "NaN INTERCEPTADO → RELLENO" : "ACTIVO · DATOS LIMPIOS";
         document.getElementById("s6-st3").textContent = isFault ? "CLAMP APLICADO → 0 FALLOS" : "ACTIVO · 0 INFRACCIONES";
+      };
+    });
+
+    /* Slide 8 interactive Score vs Impact */
+    document.querySelectorAll("[data-s8]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s8]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const isScore = btn.dataset.s8 === "score";
+        document.getElementById("s8-v1").textContent = isScore ? "18.94" : "−18.82%";
+        document.getElementById("s8-t1").textContent = isScore ? "Nuestro Agente (visibilidad 3h)" : "Reducción de emisiones CO₂";
+        document.getElementById("s8-d1").textContent = isScore ? "Frente a 20.35 del Oracle con futuro perfecto de 24 h" : "Peso del 70% en la función objetivo del campus";
+        document.getElementById("s8-v2").textContent = isScore ? "93.1%" : "−19.23%";
+        document.getElementById("s8-t2").textContent = isScore ? "Eficiencia respecto al óptimo teórico" : "Ahorro en factura eléctrica";
+        document.getElementById("s8-d2").textContent = isScore ? "Solo 6.9% de brecha pese a 21 horas de incertidumbre" : "Peso del 30% comprando en valle y descargando en punta";
+        document.getElementById("s8-chart-title").textContent = isScore ? "Comparativa de Score (2.016 h)" : "Ahorro frente a línea base (2.016 h)";
+        document.getElementById("s8-l1").textContent = isScore ? "Oracle 24h" : "Reducción CO₂";
+        document.getElementById("s8-b1").style.width = isScore ? "100%" : "82%";
+        document.getElementById("s8-n1").textContent = isScore ? "20.35" : "−18.82%";
+        document.getElementById("s8-l2").textContent = isScore ? "Nuestro Agente" : "Ahorro Coste";
+        document.getElementById("s8-b2").style.width = isScore ? "93.1%" : "85%";
+        document.getElementById("s8-n2").textContent = isScore ? "18.94" : "−19.23%";
+        document.getElementById("s8-note").textContent = isScore
+          ? "−18.82% en emisiones CO₂ y −19.23% en coste eléctrico acumulado."
+          : "0 infracciones físicas en los 2.016 pasos de evaluación fuera de muestra.";
+      };
+    });
+
+    /* Slide 9 interactive Before vs After */
+    document.querySelectorAll("[data-s9]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s9]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const isAfter = btn.dataset.s9 === "after";
+        document.getElementById("s9-time").textContent = isAfter ? "18.04s" : "37.24s";
+        document.getElementById("s9-time-sub").textContent = isAfter ? "8.95 ms/paso · límite máximo: 60 s" : "42 llamadas/h · muy cerca del límite 60 s";
+        document.getElementById("s9-size").textContent = isAfter ? "3.28MB" : "10.76MB";
+        document.getElementById("s9-size-sub").textContent = isAfter ? "Arranque en 152 ms · límite máximo: 25 MB" : "Paquete inicial sin compactación por bloques";
+        document.getElementById("s9-bt").style.width = isAfter ? "30.1%" : "62.1%";
+        document.getElementById("s9-pt").textContent = isAfter ? "30.1%" : "62.1%";
+        document.getElementById("s9-bs").style.width = isAfter ? "13.1%" : "43.0%";
+        document.getElementById("s9-ps").textContent = isAfter ? "13.1%" : "43.0%";
+      };
+    });
+
+    /* Slide 10 interactive improvement selector */
+    const s10Details = [
+      "Impacto 01: Evita decisiones demasiado prudentes ante nubes puntuales y acerca el score al Oracle 24h.",
+      "Impacto 02: Mejora la precisión solar y térmica en k=3..23 sin arrastrar la lectura fija de t−1.",
+      "Impacto 03: Reutiliza la estructura matricial del LP en C++ para bajar de 18.04 s a menos de 10 s."
+    ];
+    document.querySelectorAll("[data-s10]").forEach(card => {
+      card.onclick = () => {
+        document.querySelectorAll("[data-s10]").forEach(c => c.style.background = "transparent");
+        card.style.background = "var(--tint)";
+        document.getElementById("s10-detail").textContent = s10Details[Number(card.dataset.s10)];
       };
     });
   </script>
