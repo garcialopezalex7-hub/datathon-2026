@@ -1,4 +1,9 @@
 .venv/
 __pycache__/
 *.pyc
+*.pyo
+.ipynb_checkpoints/
+.pytest_cache/
 .DS_Store
+Thumbs.db
+*.log
