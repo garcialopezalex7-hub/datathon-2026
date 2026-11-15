@@ -13,6 +13,8 @@
       --accent: #059669;
       --deep: #065f46;
       --tint: #ecfdf5;
+      --warn-bg: #fef3c7;
+      --warn-ink: #92400e;
       --line: #dfe1e8;
       --ok: #059669;
       --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
@@ -30,7 +32,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 16:9 centered deck */
     .deck {
       position: relative;
       width: 100vw;
@@ -50,7 +51,7 @@
       opacity: 0;
       visibility: hidden;
       transform: translateY(1.2cqw) scale(0.992);
-      transition: opacity 0.48s var(--ease), transform 0.48s var(--ease), visibility 0.48s;
+      transition: opacity 0.45s var(--ease), transform 0.45s var(--ease), visibility 0.45s;
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
     }
 
@@ -60,14 +61,13 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Sheet grid + signature left blue bar */
     .sheet {
       position: absolute;
       inset: 0;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr) auto;
-      gap: 1.8cqw;
-      padding: 3.4cqw 5.4cqw 2.8cqw;
+      gap: 1.5cqw;
+      padding: 3.1cqw 5cqw 2.5cqw;
       background: var(--paper);
       color: var(--ink);
     }
@@ -87,23 +87,21 @@
     .sheet--blue::after { content: none; }
     .sheet--blue .kicker,
     .sheet--blue .ticket,
-    .sheet--blue .sub { color: rgba(255, 255, 255, 0.85); }
+    .sheet--blue .sub { color: rgba(255, 255, 255, 0.88); }
     .sheet--blue .title,
     .sheet--blue .display { color: #ffffff; }
 
-    /* Staggered reveal */
     .r {
       opacity: 0;
       transform: translateY(1cqw);
       transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
     }
     .slide.is-active .r { opacity: 1; transform: translateY(0); }
-    .slide.is-active .d1 { transition-delay: 0.06s; }
-    .slide.is-active .d2 { transition-delay: 0.14s; }
-    .slide.is-active .d3 { transition-delay: 0.22s; }
-    .slide.is-active .d4 { transition-delay: 0.30s; }
+    .slide.is-active .d1 { transition-delay: 0.05s; }
+    .slide.is-active .d2 { transition-delay: 0.12s; }
+    .slide.is-active .d3 { transition-delay: 0.20s; }
+    .slide.is-active .d4 { transition-delay: 0.28s; }
 
-    /* Header & Footer furniture */
     .furniture {
       display: flex;
       align-items: center;
@@ -113,7 +111,7 @@
 
     .kicker {
       font-family: var(--mono);
-      font-size: 1.25cqw;
+      font-size: 1.2cqw;
       letter-spacing: 0.02em;
       color: var(--accent);
     }
@@ -144,17 +142,16 @@
       color: #fff;
     }
 
-    /* Typography */
     .content {
       min-height: 0;
       display: flex;
       flex-direction: column;
-      gap: 1.2cqw;
+      gap: 1.1cqw;
     }
 
     .display {
       max-width: 78cqw;
-      font-size: 5.4cqw;
+      font-size: 5.2cqw;
       font-weight: 450;
       line-height: 1.04;
       letter-spacing: -0.035em;
@@ -163,8 +160,8 @@
     }
 
     .title {
-      max-width: 72cqw;
-      font-size: 3.85cqw;
+      max-width: 78cqw;
+      font-size: 3.55cqw;
       font-weight: 450;
       line-height: 1.08;
       letter-spacing: -0.03em;
@@ -173,31 +170,48 @@
     }
 
     .sub {
-      max-width: 66cqw;
-      font-size: 1.85cqw;
-      line-height: 1.38;
+      max-width: 72cqw;
+      font-size: 1.7cqw;
+      line-height: 1.36;
       letter-spacing: -0.01em;
       color: var(--muted);
     }
-    .sub em {
+    .sub em, .title em {
       font-style: normal;
       color: var(--accent);
-      font-weight: 500;
+      font-weight: 550;
     }
 
-    code.pill {
-      display: inline-block;
-      margin-top: 1cqw;
-      padding: 0.6cqw 1.1cqw;
-      border-radius: 0.35cqw;
-      background: var(--tint);
-      color: var(--accent);
-      font-family: var(--mono);
-      font-size: 1.25cqw;
+    /* Interactive segmented controls */
+    .seg-bar {
+      display: inline-flex;
+      gap: 0.5cqw;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      padding: 0.35cqw;
+      border-radius: 0.5cqw;
       width: fit-content;
     }
+    .seg-btn {
+      cursor: pointer;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 1.02cqw;
+      font-weight: 600;
+      padding: 0.45cqw 0.95cqw;
+      border-radius: 0.35cqw;
+      transition: all 0.2s ease;
+    }
+    .seg-btn:hover { color: var(--ink); }
+    .seg-btn.is-on {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.22);
+    }
 
-    /* Numbered columns (RawTree style) */
+    /* Columns */
     .cols {
       margin-block: auto;
       display: grid;
@@ -205,117 +219,70 @@
       gap: 0;
       list-style: none;
     }
-
     .cols > li {
       display: flex;
       flex-direction: column;
-      gap: 0.6cqw;
-      padding: 0.4cqw 2.4cqw 0.4cqw 2.4cqw;
+      gap: 0.55cqw;
+      padding: 0.4cqw 2.2cqw;
       border-left: 3px solid var(--line);
     }
-    .cols > li:first-child {
-      padding-left: 0;
-      border-left: 0;
-    }
-
+    .cols > li:first-child { padding-left: 0; border-left: 0; }
     .no {
       font-family: var(--mono);
-      font-size: 1.35cqw;
-      font-weight: 500;
+      font-size: 1.25cqw;
+      font-weight: 600;
       color: var(--accent);
-      margin-bottom: 1.2cqw;
+      margin-bottom: 0.8cqw;
     }
-
     .name {
-      font-size: 1.75cqw;
+      font-size: 1.65cqw;
       font-weight: 550;
-      line-height: 1.22;
+      line-height: 1.2;
       color: var(--ink);
     }
-
     .text {
-      font-size: 1.3cqw;
+      font-size: 1.24cqw;
       line-height: 1.42;
       color: var(--muted);
     }
 
-    /* Oversized Stats (2x2 or 3-col) */
-    .stats-grid {
-      margin-block: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.6cqw 4cqw;
-    }
-
-    .stat-row {
-      display: flex;
-      align-items: baseline;
-      gap: 1.4cqw;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 1.4cqw;
-    }
-
-    .stat-val {
-      font-family: var(--mono);
-      font-size: 5.2cqw;
-      font-weight: 350;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      color: var(--accent);
-      min-width: 19cqw;
-      font-variant-numeric: tabular-nums;
-    }
-    .stat-val.ok { color: var(--ok); }
-
-    .stat-cap b {
-      display: block;
-      font-size: 1.5cqw;
-      font-weight: 550;
-      color: var(--ink);
-      margin-bottom: 0.25cqw;
-    }
-    .stat-cap span {
-      display: block;
-      font-family: var(--mono);
-      font-size: 1.1cqw;
-      color: var(--muted);
-    }
-
-    /* Split layout with SVG */
+    /* Split layout */
     .split {
       margin-block: auto;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 3.5cqw;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 3cqw;
       align-items: center;
     }
 
     .stack-list {
       display: grid;
-      gap: 1.6cqw;
+      gap: 1.3cqw;
     }
-
     .stack-item {
       border-left: 3px solid var(--accent);
-      padding-left: 1.4cqw;
+      padding-left: 1.3cqw;
     }
     .stack-item b {
       display: block;
-      font-size: 1.55cqw;
+      font-size: 1.48cqw;
       font-weight: 550;
-      margin-bottom: 0.25cqw;
+      margin-bottom: 0.2cqw;
     }
     .stack-item span {
-      font-size: 1.25cqw;
+      font-size: 1.2cqw;
       color: var(--muted);
-      line-height: 1.4;
+      line-height: 1.38;
     }
 
     .chart-box {
       border: 1px solid var(--line);
       background: var(--paper-2);
       border-radius: 0.6cqw;
-      padding: 1.6cqw;
+      padding: 1.4cqw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9cqw;
     }
 
     .wave-line {
@@ -324,15 +291,234 @@
       stroke-width: 3;
       stroke-dasharray: 560;
       stroke-dashoffset: 560;
-      transition: stroke-dashoffset 1.3s var(--ease) 0.25s;
+      transition: stroke-dashoffset 1.1s var(--ease) 0.2s;
     }
     .slide.is-active .wave-line { stroke-dashoffset: 0; }
 
-    /* Comparison bars */
-    .bars {
+    /* Block timeline (Slide 3) */
+    .horizon-grid {
+      display: grid;
+      grid-template-columns: 3fr 4fr 6fr 11fr;
+      gap: 0.7cqw;
+      margin-top: 0.4cqw;
+    }
+    .h-block {
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      border-radius: 0.5cqw;
+      padding: 1.1cqw 1.2cqw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4cqw;
+      transition: all 0.25s ease;
+    }
+    .h-block.is-known {
+      background: var(--tint);
+      border-color: rgba(5, 150, 105, 0.45);
+    }
+    .h-block.is-split {
+      background: #fffbeb;
+      border-color: #f59e0b;
+    }
+    .h-tag {
+      font-family: var(--mono);
+      font-size: 0.95cqw;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .h-block.is-split .h-tag { color: #b45309; }
+    .h-name {
+      font-size: 1.4cqw;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .h-desc {
+      font-size: 1.08cqw;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2cqw;
+      margin-top: 0.6cqw;
+    }
+    .kpi-card {
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      border-radius: 0.5cqw;
+      padding: 1.1cqw 1.3cqw;
+    }
+    .kpi-card b {
+      display: block;
+      font-family: var(--mono);
+      font-size: 2.3cqw;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 0.2cqw;
+    }
+    .kpi-card span {
+      font-size: 1.12cqw;
+      color: var(--muted);
+      line-height: 1.32;
+    }
+
+    /* Pills & Mix Table (Slide 4) */
+    .mix-cards {
       display: grid;
       gap: 1cqw;
-      margin-top: 0.6cqw;
+    }
+    .mix-card {
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+      border-radius: 0.5cqw;
+      padding: 1cqw 1.2cqw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45cqw;
+    }
+    .mix-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.3cqw;
+      font-weight: 600;
+    }
+    .mix-ratio {
+      font-family: var(--mono);
+      font-size: 1.05cqw;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .mix-bar {
+      height: 0.65cqw;
+      border-radius: 99px;
+      background: #cbd5e1;
+      overflow: hidden;
+      display: flex;
+    }
+    .mix-lgb { background: var(--accent); height: 100%; }
+    .mix-rdg { background: #0f172a; height: 100%; opacity: 0.55; }
+    .mix-note {
+      font-size: 1.08cqw;
+      color: var(--muted);
+    }
+
+    /* MPC Interactive Stepper (Slide 5) */
+    .mpc-track {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0.45cqw;
+      margin-top: 0.3cqw;
+    }
+    .mpc-cell {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 0.35cqw;
+      padding: 0.65cqw 0.4cqw;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.95cqw;
+      transition: all 0.25s ease;
+    }
+    .mpc-cell.is-exec {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 700;
+      transform: translateY(-0.2cqw);
+    }
+    .mpc-cell.is-plan {
+      background: var(--tint);
+      border-color: rgba(5, 150, 105, 0.4);
+      color: var(--deep);
+    }
+    .mpc-cell.is-past {
+      opacity: 0.42;
+      background: #e2e8f0;
+    }
+
+    /* Safety Shield Cards (Slide 6) */
+    .shield-grid {
+      margin-block: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4cqw;
+    }
+    .shield-card {
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      background: var(--paper-2);
+      border-radius: 0.5cqw;
+      padding: 1.4cqw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55cqw;
+      transition: all 0.25s ease;
+    }
+    .shield-card.is-alert {
+      border-top-color: #d97706;
+      background: #fffbeb;
+    }
+    .shield-status {
+      font-family: var(--mono);
+      font-size: 0.95cqw;
+      font-weight: 700;
+      padding: 0.25cqw 0.6cqw;
+      border-radius: 0.3cqw;
+      width: fit-content;
+      background: var(--tint);
+      color: var(--accent);
+    }
+    .shield-card.is-alert .shield-status {
+      background: var(--warn-bg);
+      color: var(--warn-ink);
+    }
+
+    /* Oversized Stats (Slide 7) */
+    .stats-grid {
+      margin-block: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.2cqw 4cqw;
+    }
+    .stat-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1.4cqw;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1.2cqw;
+    }
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 5cqw;
+      font-weight: 350;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      min-width: 18cqw;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-val.ok { color: var(--ok); }
+    .stat-cap b {
+      display: block;
+      font-size: 1.48cqw;
+      font-weight: 550;
+      color: var(--ink);
+      margin-bottom: 0.2cqw;
+    }
+    .stat-cap span {
+      display: block;
+      font-family: var(--mono);
+      font-size: 1.08cqw;
+      color: var(--muted);
+    }
+
+    .bars {
+      display: grid;
+      gap: 0.85cqw;
+      margin-top: 0.4cqw;
     }
     .bar-row {
       display: grid;
@@ -353,76 +539,11 @@
       width: 0;
       background: var(--accent);
       border-radius: 99px;
-      transition: width 0.9s var(--ease) 0.35s;
+      transition: width 0.9s var(--ease) 0.3s;
     }
     .slide.is-active .bar-fill.b93 { width: 93.1%; }
-    .slide.is-active .bar-fill.b100 { width: 100%; background: var(--muted); opacity: 0.45; }
     .slide.is-active .bar-fill.b48 { width: 48.4%; background: var(--ok); }
     .slide.is-active .bar-fill.b30 { width: 30.5%; background: var(--accent); }
-
-    /* Hourly pipeline diagram (Slide 3) */
-    .pipeline {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-      align-items: stretch;
-      gap: 0.8cqw;
-      margin-top: 0.4cqw;
-    }
-    .pipe-step {
-      background: var(--paper-2);
-      border: 1px solid var(--line);
-      border-top: 3px solid var(--accent);
-      border-radius: 0.5cqw;
-      padding: 1cqw 1.1cqw;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35cqw;
-    }
-    .pipe-step--accent {
-      background: var(--tint);
-      border-color: rgba(5, 150, 105, 0.35);
-    }
-    .pipe-kicker {
-      font-family: var(--mono);
-      font-size: 0.9cqw;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.03em;
-    }
-    .pipe-title {
-      font-size: 1.3cqw;
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1.15;
-    }
-    .pipe-desc {
-      font-size: 1.02cqw;
-      color: var(--muted);
-      line-height: 1.3;
-    }
-    .pipe-arrow {
-      display: grid;
-      place-items: center;
-      font-family: var(--mono);
-      font-size: 1.5cqw;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .mini-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4cqw;
-      margin-top: 0.25cqw;
-    }
-    .mini-pill {
-      font-family: var(--mono);
-      font-size: 0.88cqw;
-      padding: 0.18cqw 0.5cqw;
-      border-radius: 0.25cqw;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      color: var(--ink);
-    }
 
     /* Footer controls */
     .brand-foot {
@@ -446,9 +567,8 @@
     .nav-wrap {
       display: flex;
       align-items: center;
-      gap: 1cqw;
+      gap: 0.8cqw;
     }
-
     .nav-btn {
       background: transparent;
       border: 1px solid var(--line);
@@ -485,7 +605,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
           <div class="nav-wrap">
-            <span class="ticket">01 / 06</span>
+            <span class="ticket">01 / 09</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -493,7 +613,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 2: EL DESAFÍO -->
+    <!-- SLIDE 2: EL DESAFÍO (INTERACTIVO: DÍA VS NOCHE) -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
@@ -510,36 +630,39 @@
                 <span>Solo conocemos t, t+1 y t+2 de precio/CO₂ y la lectura t−1 de consumo y meteo.</span>
               </div>
               <div class="stack-item">
-                <b>Incertidumbre solar diurna</b>
-                <span>De noche el error es ±40 kW; de día con nubes y PV sube hasta ±210 kW.</span>
+                <b>Incertidumbre asimétrica</b>
+                <span>De noche el error es ±40 kW; de día con nubes y solar (PV) sube hasta ±210 kW.</span>
               </div>
               <div class="stack-item">
                 <b>Riesgo de timeout inicial</b>
-                <span>42 modelos LightGBM por hora tardaban 37.24 s en local (muy cerca de 60 s).</span>
+                <span>42 modelos LightGBM por hora tardaban 37.24 s en local (cerca del límite de 60 s).</span>
               </div>
             </div>
             <div class="chart-box">
-              <svg viewBox="0 0 340 205" width="100%">
-                <!-- Known 3h vs Unknown 21h -->
-                <rect x="16" y="24" width="60" height="106" fill="#ecfdf5" rx="4"/>
-                <rect x="76" y="24" width="248" height="106" fill="#f1f5f9" rx="4"/>
-                <line x1="76" y1="24" x2="76" y2="130" stroke="#059669" stroke-width="1.8" stroke-dasharray="4 3"/>
-                <!-- Uncertainty band widening in daytime -->
-                <path d="M76,74 C115,62 155,34 205,40 C248,46 280,96 324,96 L324,116 C280,114 248,96 205,86 C155,78 115,82 76,74 Z" fill="#059669" opacity="0.14"/>
-                <line x1="16" y1="130" x2="324" y2="130" stroke="#dfe1e8" stroke-width="1.5"/>
-                <path class="wave-line" d="M16,112 C48,110 66,80 76,74 C112,56 155,54 205,62 C248,70 282,110 324,104" />
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="seg-bar" id="s2-mode">
+                  <button class="seg-btn is-on" data-s2="day">Día Solar (±210 kW)</button>
+                  <button class="seg-btn" data-s2="night">Noche (±40 kW)</button>
+                </div>
+              </div>
+              <svg viewBox="0 0 340 198" width="100%">
+                <rect x="16" y="22" width="60" height="104" fill="#ecfdf5" rx="4"/>
+                <rect x="76" y="22" width="248" height="104" fill="#f1f5f9" rx="4"/>
+                <line x1="76" y1="22" x2="76" y2="126" stroke="#059669" stroke-width="1.8" stroke-dasharray="4 3"/>
+                <path id="s2-cone" d="M76,74 C115,56 160,30 205,34 C250,40 282,88 324,90 L324,114 C282,110 250,94 205,90 C160,84 115,84 76,74 Z" fill="#059669" opacity="0.18"/>
+                <line x1="16" y1="126" x2="324" y2="126" stroke="#dfe1e8" stroke-width="1.5"/>
+                <path id="s2-curve" class="wave-line" d="M16,108 C48,106 66,78 76,74 C114,54 160,54 205,62 C250,70 284,106 324,102" />
                 <circle cx="76" cy="74" r="4.5" fill="#059669"/>
-                <text x="18" y="16" fill="#059669" font-family="monospace" font-size="10" font-weight="700">3h Reales</text>
-                <text x="112" y="16" fill="#64748b" font-family="monospace" font-size="10">21h Incertidumbre (Forecast + MPC)</text>
-                <text x="86" y="122" fill="#64748b" font-family="monospace" font-size="8.5">Noche ±40 kW</text>
-                <text x="176" y="36" fill="#065f46" font-family="monospace" font-size="8.5" font-weight="700">Día solar ±210 kW</text>
+                <text x="18" y="14" fill="#059669" font-family="monospace" font-size="10" font-weight="700">3h Reales</text>
+                <text x="110" y="14" fill="#64748b" font-family="monospace" font-size="10">21h Incertidumbre (Forecast + MPC)</text>
+                <text id="s2-badge" x="155" y="34" fill="#065f46" font-family="monospace" font-size="9.5" font-weight="700">Banda solar ±210 kW</text>
                 <!-- Physical battery strip -->
-                <rect x="16" y="144" width="308" height="46" fill="#ffffff" stroke="#dfe1e8" rx="4"/>
-                <rect x="26" y="156" width="54" height="22" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" rx="3"/>
-                <rect x="80" y="162" width="4" height="10" fill="#059669" rx="1"/>
-                <rect x="30" y="160" width="32" height="14" fill="#059669" opacity="0.7" rx="1.5"/>
-                <text x="96" y="164" fill="#1e293b" font-family="monospace" font-size="9.5" font-weight="700">Batería: 0 – 6.000 kWh</text>
-                <text x="96" y="178" fill="#64748b" font-family="monospace" font-size="9">Potencia ±1.500 kW · Eficiencia η = 0,90</text>
+                <rect x="16" y="138" width="308" height="46" fill="#ffffff" stroke="#dfe1e8" rx="4"/>
+                <rect x="26" y="150" width="54" height="22" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" rx="3"/>
+                <rect x="80" y="156" width="4" height="10" fill="#059669" rx="1"/>
+                <rect x="30" y="154" width="32" height="14" fill="#059669" opacity="0.75" rx="1.5"/>
+                <text x="96" y="158" fill="#1e293b" font-family="monospace" font-size="9.5" font-weight="700">Batería: 0 – 6.000 kWh</text>
+                <text x="96" y="172" fill="#64748b" font-family="monospace" font-size="9">Potencia ±1.500 kW · Eficiencia η = 0,90</text>
               </svg>
             </div>
           </div>
@@ -547,7 +670,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">02 / 06</span>
+            <span class="ticket">02 / 09</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -555,76 +678,63 @@
       </div>
     </section>
 
-    <!-- SLIDE 3: NUESTRA SOLUCIÓN -->
+    <!-- SLIDE 3: ARQUITECTURA DE HORIZONTE (3 BLOQUES) -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">02 · ARQUITECTURA</span>
+          <span class="kicker r d1">02 · REDUCCIÓN DE MODELOS</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
-          <h2 class="title r d2">Predicción por Bloques + <em>MPC Estocástico</em></h2>
-          <p class="sub r d2">Cada hora recalculamos la ruta óptima a 24 h, ejecutando solo el paso inmediato.</p>
-          <div class="pipeline r d3">
-            <div class="pipe-step">
-              <span class="pipe-kicker">1 · PREVISIÓN</span>
-              <span class="pipe-title">LightGBM + Ridge</span>
-              <span class="pipe-desc">Patrones no lineales + ancla lineal en 3 bloques (6 llamadas/h).</span>
-              <div class="mini-pills">
-                <span class="mini-pill">85/15 Load·€</span>
-                <span class="mini-pill">75/25 CO₂</span>
-              </div>
-            </div>
-            <div class="pipe-arrow">→</div>
-            <div class="pipe-step">
-              <span class="pipe-kicker">2 · INCERTIDUMBRE</span>
-              <span class="pipe-title">Escenarios q_res</span>
-              <span class="pipe-desc">Bandas de error según hora (noche ±40 kW vs día ±210 kW).</span>
-              <div class="mini-pills">
-                <span class="mini-pill">100% LGBM PV</span>
-              </div>
-            </div>
-            <div class="pipe-arrow">→</div>
-            <div class="pipe-step pipe-step--accent">
-              <span class="pipe-kicker">3 · OPTIMIZACIÓN</span>
-              <span class="pipe-title">MPC + HiGHS (LP)</span>
-              <span class="pipe-desc">Planifica 24 h con valor terminal para no vaciar la batería.</span>
-              <div class="mini-pills">
-                <span class="mini-pill">GPS horario</span>
-              </div>
-            </div>
-            <div class="pipe-arrow">→</div>
-            <div class="pipe-step">
-              <span class="pipe-kicker">4 · EJECUCIÓN</span>
-              <span class="pipe-title">Safety Clamp</span>
-              <span class="pipe-desc">Aplica solo t=0 con margen físico 1e−4 kW y NaN-safe.</span>
-              <div class="mini-pills">
-                <span class="mini-pill">0 infracciones</span>
-              </div>
+          <h2 class="title r d2">De 42 modelos por hora a <em>3 Bloques</em> (6 llamadas).</h2>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1cqw;" class="r d2">
+            <p class="sub">Agrupamos el horizonte k=3..23 por similitud física para ganar velocidad y datos de entrenamiento.</p>
+            <div class="seg-bar" id="s3-mode">
+              <button class="seg-btn is-on" data-s3="blocks">Después: 3 Bloques (6/h)</button>
+              <button class="seg-btn" data-s3="naive">Antes: Hora a hora (42/h)</button>
             </div>
           </div>
-          <ul class="cols r d4" style="margin-top: 0.6cqw;">
-            <li>
-              <span class="no">01 · ML</span>
-              <span class="name">Por qué 3 Bloques</span>
-              <span class="text">Agrupamos k=3..23 en 3 horizontes: bajamos de 42 a 6 modelos/h y entrenamos con hasta 11× más datos.</span>
-            </li>
-            <li>
-              <span class="no">02 · MPC</span>
-              <span class="name">Pesos Adaptativos</span>
-              <span class="text">Calibración online del ratio CO₂/Coste y valor terminal cóncavo para guardar energía valiosa.</span>
-            </li>
-            <li>
-              <span class="no">03 · FÍSICA</span>
-              <span class="name">Blindaje Total</span>
-              <span class="text">Forward-fill ante NaN/inf, reinicio automático entre semanas y recorte estricto en [0, 6.000] kWh.</span>
-            </li>
-          </ul>
+          <div class="horizon-grid r d3" id="s3-grid">
+            <div class="h-block is-known">
+              <span class="h-tag">k = 0, 1, 2</span>
+              <span class="h-name">3h Conocidas</span>
+              <span class="h-desc">Precio y CO₂ reales dados por el entorno. Solo predecimos consumo/PV inmediato.</span>
+            </div>
+            <div class="h-block">
+              <span class="h-tag">BLOQUE 1 · k = 3..6</span>
+              <span class="h-name">Corto Plazo</span>
+              <span class="h-desc">4 horas cercanas donde aún pesa mucho la inercia de la lectura t−1.</span>
+            </div>
+            <div class="h-block">
+              <span class="h-tag">BLOQUE 2 · k = 7..12</span>
+              <span class="h-name">Medio Plazo</span>
+              <span class="h-desc">6 horas de transición (cambio de franja tarifaria o curva solar).</span>
+            </div>
+            <div class="h-block">
+              <span class="h-tag">BLOQUE 3 · k = 13..23</span>
+              <span class="h-name">Largo Plazo</span>
+              <span class="h-desc">11 horas finales donde mandan el ciclo diario (hora, día, calendario).</span>
+            </div>
+          </div>
+          <div class="kpi-strip r d4">
+            <div class="kpi-card">
+              <b id="s3-k1">6 llamadas / hora</b>
+              <span>Bajamos de 42 llamadas LightGBM a solo 6 por cada paso horario.</span>
+            </div>
+            <div class="kpi-card">
+              <b id="s3-k2">11× más datos</b>
+              <span>Cada bloque agrupa varios horizontes, evitando sobreajuste con pocos datos.</span>
+            </div>
+            <div class="kpi-card">
+              <b id="s3-k3">37.24 s → 18.04 s</b>
+              <span>Mitad de tiempo de ejecución y peso reducido de 10.76 MB a 3.28 MB.</span>
+            </div>
+          </div>
         </div>
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">03 / 06</span>
+            <span class="ticket">03 / 09</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -632,11 +742,174 @@
       </div>
     </section>
 
-    <!-- SLIDE 4: RESULTADOS -->
+    <!-- SLIDE 4: EL MOTOR ML (LIGHTGBM + RIDGE) -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">03 · RESULTADOS VERIFICADOS</span>
+          <span class="kicker r d1">03 · MACHINE LEARNING HÍBRIDO</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2"><em>LightGBM</em> captura patrones; <em>Ridge</em> aporta estabilidad.</h2>
+          <div class="split r d3">
+            <div class="mix-cards">
+              <div class="mix-card">
+                <div class="mix-head">
+                  <span>Consumo (Load) y Precio</span>
+                  <span class="mix-ratio">85% LightGBM + 15% Ridge</span>
+                </div>
+                <div class="mix-bar"><div class="mix-lgb" style="width:85%"></div><div class="mix-rdg" style="width:15%"></div></div>
+                <span class="mix-note">Saltos horarios por tarifa y actividad + 15% lineal para suavizar picos.</span>
+              </div>
+              <div class="mix-card">
+                <div class="mix-head">
+                  <span>Intensidad de CO₂</span>
+                  <span class="mix-ratio">75% LightGBM + 25% Ridge</span>
+                </div>
+                <div class="mix-bar"><div class="mix-lgb" style="width:75%"></div><div class="mix-rdg" style="width:25%"></div></div>
+                <span class="mix-note">Mayor inercia térmica de la red: más peso lineal estabiliza la tendencia.</span>
+              </div>
+              <div class="mix-card">
+                <div class="mix-head">
+                  <span>Generación Solar (PV)</span>
+                  <span class="mix-ratio">100% LightGBM</span>
+                </div>
+                <div class="mix-bar"><div class="mix-lgb" style="width:100%"></div></div>
+                <span class="mix-note">Corte estricto día/noche (0 kW nocturno) que una recta no clava.</span>
+              </div>
+            </div>
+            <div class="chart-box">
+              <div class="seg-bar" id="s4-mode">
+                <button class="seg-btn is-on" data-s4="blend">Mezcla (85/15)</button>
+                <button class="seg-btn" data-s4="lgb">Solo LightGBM</button>
+                <button class="seg-btn" data-s4="ridge">Solo Ridge</button>
+              </div>
+              <svg viewBox="0 0 320 165" width="100%">
+                <line x1="20" y1="138" x2="305" y2="138" stroke="#dfe1e8" stroke-width="1.5"/>
+                <!-- Real reference (dashed) -->
+                <path d="M24,116 L60,112 L92,72 L130,66 L165,44 L205,52 L240,88 L280,118" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3"/>
+                <!-- Active model path -->
+                <path id="s4-path" d="M24,114 L60,110 L92,74 L130,68 L165,46 L205,54 L240,86 L280,116" fill="none" stroke="#059669" stroke-width="3"/>
+                <text id="s4-label" x="24" y="22" fill="#059669" font-family="monospace" font-size="10.5" font-weight="700">Híbrido: precisión + suavizado en milisegundos</text>
+                <text x="24" y="154" fill="#64748b" font-family="monospace" font-size="9">Línea discontinua = curva real · Pesos calibrados en validación</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">04 / 09</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: EL GPS HORARIO (MPC + HIGHS + VALOR TERMINAL) -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">04 · OPTIMIZACIÓN MPC + HiGHS</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Un <em>GPS horario</em>: planifica 24 h, ejecuta 1 paso.</h2>
+          <div class="split r d3">
+            <div class="stack-list">
+              <div class="stack-item">
+                <b>Solver LP HiGHS (presolve=False)</b>
+                <span>Calcula en milisegundos cuánta potencia cargar (p_c) o descargar (p_d) cada hora respetando η = 0,90.</span>
+              </div>
+              <div class="stack-item">
+                <b>Horizonte deslizante (MPC)</b>
+                <span>Igual que un GPS recalcula si hay tráfico, cada hora re-optimizamos 24 h pero solo aplicamos t=0.</span>
+              </div>
+              <div class="stack-item">
+                <b>Valor Terminal cóncavo</b>
+                <span>Pone precio a la energía restante al final de las 24 h para evitar que el solver vacíe la batería sin sentido.</span>
+              </div>
+            </div>
+            <div class="chart-box">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size:1.05cqw; font-weight:700; color:var(--ink);">Simulador de Ventana MPC</span>
+                <button class="seg-btn is-on" id="s5-step-btn">Avanzar 1 hora →</button>
+              </div>
+              <div class="mpc-track" id="s5-track"></div>
+              <p id="s5-caption" style="font-family:var(--mono); font-size:1.02cqw; color:var(--deep); background:var(--tint); padding:0.7cqw 0.9cqw; border-radius:0.4cqw;">
+                t=0: HiGHS optimiza t=0..23 → ejecutamos SOLO t=0 y guardamos SoC con valor terminal.
+              </p>
+              <svg viewBox="0 0 320 72" width="100%">
+                <line x1="16" y1="58" x2="304" y2="58" stroke="#dfe1e8" stroke-width="1.2"/>
+                <path d="M20,56 Q95,18 295,12" fill="none" stroke="#059669" stroke-width="2.5"/>
+                <text x="20" y="16" fill="#059669" font-family="monospace" font-size="9.5" font-weight="700">Valor Terminal Cóncavo (reserva batería valiosa)</text>
+                <text x="20" y="68" fill="#64748b" font-family="monospace" font-size="8.5">0 kWh (vacía) ───────────────────────► 6.000 kWh (llena)</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">05 / 09</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: BLINDAJE FÍSICO Y ESCENARIOS -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">05 · ROBUSTEZ Y SEGURIDAD</span>
+          <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
+        </header>
+        <div class="content">
+          <h2 class="title r d2">Blindaje total: <em>0 infracciones</em> garantizadas.</h2>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1cqw;" class="r d2">
+            <p class="sub">Incluso si llegan datos corruptos o cambia la meteorología, la física de la batería nunca se viola.</p>
+            <div class="seg-bar" id="s6-mode">
+              <button class="seg-btn is-on" data-s6="ok">Operación Normal</button>
+              <button class="seg-btn" data-s6="fault">Simular Anomalía (NaN / Pico)</button>
+            </div>
+          </div>
+          <div class="shield-grid r d3" id="s6-grid">
+            <div class="shield-card">
+              <span class="shield-status" id="s6-st1">ACTIVO · ESCENARIOS q_res</span>
+              <span class="name">MPC Estocástico</span>
+              <span class="text" id="s6-tx1">Pondera escenarios de error solar (q_res) y calibra online el ratio CO₂/Coste para no arriesgar en horas inciertas.</span>
+            </div>
+            <div class="shield-card">
+              <span class="shield-status" id="s6-st2">ACTIVO · DATOS LIMPIOS</span>
+              <span class="name">Sanitización y Reinicio</span>
+              <span class="text" id="s6-tx2">Forward-fill ante valores NaN/inf y reinicio automático del estado interno cuando cambia la semana de evaluación.</span>
+            </div>
+            <div class="shield-card">
+              <span class="shield-status" id="s6-st3">ACTIVO · 0 INFRACCIONES</span>
+              <span class="name">Safety Clamp (1e−4 kW)</span>
+              <span class="text" id="s6-tx3">Recorte físico final que garantiza estrictamente ±1.500 kW y [0, 6.000] kWh con margen numérico 1e−4 kW.</span>
+            </div>
+          </div>
+        </div>
+        <footer class="furniture">
+          <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
+          <div class="nav-wrap">
+            <span class="ticket">06 / 09</span>
+            <button class="nav-btn" data-prev>←</button>
+            <button class="nav-btn" data-next>→</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: RESULTADOS -->
+    <section class="slide">
+      <div class="sheet">
+        <header class="furniture">
+          <span class="kicker r d1">06 · RESULTADOS VERIFICADOS</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -680,7 +953,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">04 / 06</span>
+            <span class="ticket">07 / 09</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -688,11 +961,11 @@
       </div>
     </section>
 
-    <!-- SLIDE 5: MEJORAS FUTURAS -->
+    <!-- SLIDE 8: MEJORAS FUTURAS -->
     <section class="slide">
       <div class="sheet">
         <header class="furniture">
-          <span class="kicker r d1">04 · LÍNEAS DE MEJORA</span>
+          <span class="kicker r d1">07 · LÍNEAS DE MEJORA</span>
           <button class="timer-btn r d1" data-timer>⏱ 04:00</button>
         </header>
         <div class="content">
@@ -719,7 +992,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>Campus Nord · Modo Difícil</span>
           <div class="nav-wrap">
-            <span class="ticket">05 / 06</span>
+            <span class="ticket">08 / 09</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -727,7 +1000,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 6: CIERRE -->
+    <!-- SLIDE 9: CIERRE -->
     <section class="slide">
       <div class="sheet sheet--blue">
         <header class="furniture">
@@ -743,7 +1016,7 @@
         <footer class="furniture">
           <span class="brand-foot"><span class="brand-sq"></span>AED × UPC Sostenible</span>
           <div class="nav-wrap">
-            <span class="ticket">06 / 06</span>
+            <span class="ticket">09 / 09</span>
             <button class="nav-btn" data-prev>←</button>
             <button class="nav-btn" data-next>→</button>
           </div>
@@ -781,16 +1054,108 @@
 
     const timerBtns = [...document.querySelectorAll("[data-timer]")];
     let sec = 240, tid = null;
-    const draw = () => {
+    const drawTimer = () => {
       const txt = `⏱ ${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
       timerBtns.forEach(b => b.textContent = txt);
     };
     timerBtns.forEach(b => b.onclick = () => {
-      if (tid) { clearInterval(tid); tid = null; sec = 240; draw(); }
+      if (tid) { clearInterval(tid); tid = null; sec = 240; drawTimer(); }
       else tid = setInterval(() => {
-        if (sec > 0) { sec--; draw(); }
+        if (sec > 0) { sec--; drawTimer(); }
         else { clearInterval(tid); tid = null; }
       }, 1000);
+    });
+
+    /* Slide 2 interactive Day vs Night uncertainty */
+    document.querySelectorAll("[data-s2]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s2]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const isDay = btn.dataset.s2 === "day";
+        document.getElementById("s2-cone").setAttribute("d", isDay
+          ? "M76,74 C115,56 160,30 205,34 C250,40 282,88 324,90 L324,114 C282,110 250,94 205,90 C160,84 115,84 76,74 Z"
+          : "M76,94 C130,90 210,88 324,90 L324,104 C210,104 130,106 76,94 Z");
+        document.getElementById("s2-curve").setAttribute("d", isDay
+          ? "M16,108 C48,106 66,78 76,74 C114,54 160,54 205,62 C250,70 284,106 324,102"
+          : "M16,104 C48,102 66,96 76,94 C130,95 210,96 324,97");
+        document.getElementById("s2-badge").textContent = isDay ? "Banda solar ±210 kW" : "Banda nocturna ±40 kW";
+      };
+    });
+
+    /* Slide 3 interactive 3 blocks vs 42 naive */
+    document.querySelectorAll("[data-s3]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s3]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const isBlocks = btn.dataset.s3 === "blocks";
+        const blocks = [...document.querySelectorAll("#s3-grid .h-block")].slice(1);
+        blocks.forEach(b => b.classList.toggle("is-split", !isBlocks));
+        document.getElementById("s3-k1").textContent = isBlocks ? "6 llamadas / hora" : "42 llamadas / hora";
+        document.getElementById("s3-k2").textContent = isBlocks ? "11× más datos" : "1× datos por modelo";
+        document.getElementById("s3-k3").textContent = isBlocks ? "37.24 s → 18.04 s" : "37.24 s (riesgo 60 s)";
+      };
+    });
+
+    /* Slide 4 interactive LightGBM vs Ridge vs Blend */
+    document.querySelectorAll("[data-s4]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s4]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const mode = btn.dataset.s4;
+        const path = document.getElementById("s4-path");
+        const label = document.getElementById("s4-label");
+        if (mode === "blend") {
+          path.setAttribute("d", "M24,114 L60,110 L92,74 L130,68 L165,46 L205,54 L240,86 L280,116");
+          path.setAttribute("stroke", "#059669");
+          label.textContent = "Híbrido: precisión + suavizado en milisegundos";
+          label.setAttribute("fill", "#059669");
+        } else if (mode === "lgb") {
+          path.setAttribute("d", "M24,118 L60,118 L62,72 L130,72 L132,42 L205,42 L207,88 L280,120");
+          path.setAttribute("stroke", "#0284c7");
+          label.textContent = "LightGBM: escalones exactos, sensible a extremos";
+          label.setAttribute("fill", "#0284c7");
+        } else {
+          path.setAttribute("d", "M24,108 L280,82");
+          path.setAttribute("stroke", "#334155");
+          label.textContent = "Ridge: recta estable, no capta picos horarios";
+          label.setAttribute("fill", "#334155");
+        }
+      };
+    });
+
+    /* Slide 5 interactive MPC GPS stepper */
+    let mpcStep = 0;
+    const renderMpc = () => {
+      const track = document.getElementById("s5-track");
+      track.innerHTML = "";
+      for (let i = 0; i < 8; i++) {
+        const div = document.createElement("div");
+        div.className = "mpc-cell";
+        if (i < mpcStep) { div.classList.add("is-past"); div.textContent = `t+${i} ✓`; }
+        else if (i === mpcStep) { div.classList.add("is-exec"); div.textContent = `t+${i} EXEC`; }
+        else { div.classList.add("is-plan"); div.textContent = `t+${i} plan`; }
+        track.appendChild(div);
+      }
+      document.getElementById("s5-caption").textContent =
+        `Paso t+${mpcStep}: HiGHS optimiza 24 h hacia adelante → ejecutamos SOLO t+${mpcStep} y avanzamos.`;
+    };
+    renderMpc();
+    document.getElementById("s5-step-btn").onclick = () => {
+      mpcStep = (mpcStep + 1) % 5;
+      renderMpc();
+    };
+
+    /* Slide 6 interactive fault simulator */
+    document.querySelectorAll("[data-s6]").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll("[data-s6]").forEach(b => b.classList.remove("is-on"));
+        btn.classList.add("is-on");
+        const isFault = btn.dataset.s6 === "fault";
+        document.querySelectorAll("#s6-grid .shield-card").forEach(c => c.classList.toggle("is-alert", isFault));
+        document.getElementById("s6-st1").textContent = isFault ? "PICO SOLAR DETECTADO" : "ACTIVO · ESCENARIOS q_res";
+        document.getElementById("s6-st2").textContent = isFault ? "NaN INTERCEPTADO → RELLENO" : "ACTIVO · DATOS LIMPIOS";
+        document.getElementById("s6-st3").textContent = isFault ? "CLAMP APLICADO → 0 FALLOS" : "ACTIVO · 0 INFRACCIONES";
+      };
     });
   </script>
 </body>
