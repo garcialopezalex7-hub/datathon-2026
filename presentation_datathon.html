@@ -697,15 +697,15 @@
             <div class="stack-list">
               <div class="stack-item">
                 <b>21 horas a ciegas</b>
-                <span>Solo conocemos t, t+1 y t+2 de precio/CO₂ y la lectura t−1 de consumo y meteo.</span>
+                <span>Solo conocemos t, t+1 y t+2 de precio/CO₂ y la lectura t−1 de consumo y meteo; las 21 h restantes se predicen.</span>
               </div>
               <div class="stack-item">
-                <b>Incertidumbre asimétrica</b>
-                <span>De noche el error es ±40 kW; de día con nubes y solar (PV) sube hasta ±210 kW.</span>
+                <b>Error distinto de día que de noche</b>
+                <span>De noche sin sol el error es bajo (±40 kW); de día, las nubes sobre la solar (PV) lo disparan hasta ±210 kW.</span>
               </div>
               <div class="stack-item">
-                <b>Riesgo de timeout inicial</b>
-                <span>42 modelos LightGBM por hora tardaban 37.24 s en local (cerca del límite de 60 s).</span>
+                <b>Modelo base al límite de tiempo</b>
+                <span>Nuestra primera versión lanzaba 42 modelos LightGBM/hora y tardaba 37.24 s en local (poco margen frente a 60 s).</span>
               </div>
             </div>
             <div class="chart-box">
